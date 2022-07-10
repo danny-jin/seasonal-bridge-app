@@ -12,9 +12,12 @@ const maxSpacingPixel = 1000;
 const spacingPixelIncrement = 5;
 
 module.exports = {
-  content: ["./src/**/*.{html,js}"],
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   theme: {
     extend: {
+      spacing: {
+        ...range(minSpacingPixel, maxSpacingPixel, spacingPixelIncrement).reduce((merged, f) => ({ ...merged, [f]: `${f}px` }), {})
+      }, 
       fontSize: {
         ...range(minFontSize, maxFontSize).reduce((merged, f) => ({ ...merged, [f]: `${f}px`}), {}),
       },
@@ -33,33 +36,30 @@ module.exports = {
         '4': '4px',
         ...range(1, 100).reduce((merged, f) => ({ ...merged, [`${f}p`]: `${f*0.01}em`}), {}),
       },
-      colors: {
-        transparent: 'transparent',
-        current: 'currentColor',
-        black: '#ffffff',
-        white: '#000000',
-        alto: '#e0e0e0',
-        paarl: '#9C622E',
-        corvette: '#FACB99',
-        rope: '#8D531F',
-        codgray1: '#060606',
-        codgray2: '#141414',
-        goldsand: '#E8B580',
-        slategray: '#768299',
+      borderRadius: {
+        none: '0px',
+        sm: '0.125rem',
+        DEFAULT: '0.25rem',
+        md: '0.375rem',
+        lg: '0.5rem',
+        xl: '0.75rem',
+        '2xl': '1rem',
+        '3xl': '1.5rem',
+        full: '9999px',
+      },
+      borderWidth: {
+        DEFAULT: '1px',
+        0: '0px',
+        2: '2px',
+        3: '3px',
+        4: '4px',
+        8: '8px',
       },
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
-        black: '#ffffff',
-        white: '#000000',
-        alto: '#e0e0e0',
         paarl: '#9C622E',
         corvette: '#FACB99',
-        rope: '#8D531F',
-        codgray1: '#060606',
-        codgray2: '#141414',
-        goldsand: '#E8B580',
-        slategray: '#768299',
       },
     },
   },

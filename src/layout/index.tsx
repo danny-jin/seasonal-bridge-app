@@ -16,8 +16,8 @@ const Layout = ({children}: any) => {
       }
     }
     return (
-      <div className="flex flex-col w-full h-screen bg-gradient-to-b from-codgray1 to-codgray2">
-        <div className="w-full fixed z-10">
+      <div className="flex flex-col w-full h-screen">
+        <div className="w-full fixed z-10 border-2 border-black">
           <Navbar/>
         </div>
         <div className="flex flex-grow overflow-hidden">
