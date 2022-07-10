@@ -6,8 +6,10 @@ const Layout = ({children}: any) => {
         <div className="w-full fixed z-10 border-2 border-black">
           <Navbar/>
         </div>
-        <div className="flex justify-between overflow-hidden mt-85">
+        <div className="flex justify-cetner items-center h-screen overflow-hidden mt-85">
+          <div className="w-full">
           {children}
+          </div>
         </div>
       </div>
     )
