@@ -20,9 +20,8 @@ const Layout = ({children}: any) => {
         <div className="w-full fixed z-10 border-2 border-black">
           <Navbar/>
         </div>
-        <div className="flex flex-grow overflow-hidden">
-          <div className="flex-grow w-full h-full bg-background-cerberus-flat bg-no-repeat bg-85% bg-center
-          pt-55 md:pt-85 px-10 pb-10 overflow-y-auto scrollbar-hide">{children}</div>
+        <div className="flex justify-between overflow-hidden mt-85">
+          {children}
         </div>
       </div>
     )

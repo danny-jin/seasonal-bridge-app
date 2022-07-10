@@ -61,6 +61,11 @@ module.exports = {
         paarl: '#9C622E',
         corvette: '#FACB99',
       },
+      margin: (theme, { negative }) => ({
+        auto: 'auto',
+        ...theme('spacing'),
+        ...negative(theme('spacing')),
+      }),
     },
   },
   plugins: [],
