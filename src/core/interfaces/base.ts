@@ -1,4 +1,4 @@
-export interface SeasonTokenProps {
+export interface SeasonalToken {
     name: string;
     ethAddr: string;
     bscAddr: string;

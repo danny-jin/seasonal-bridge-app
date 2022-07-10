@@ -14,3 +14,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+div#eth-season, div#bsc-season{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
