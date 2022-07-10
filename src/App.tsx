@@ -15,19 +15,22 @@ import './App.css';
 
 
 function App() {
+  const swapBtnsStyle = 'rounded-md bg-paarl hover:bg-corvette w-155 h-40 text-white hover:text-black font-semibold m-5 b-1';
   return (
     <Layout>
       <Grid container spacing={ 1 }>
         <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
-          <Box className="text-center text-24">Ethereum</Box>
+          <Box className="text-center text-24 m-10">Ethereum</Box>
           <EthTokenSection></EthTokenSection>
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 2 } className="justify-box flex flex-col justify-around">
-          <Button variant="contained" color="primary">Swap Eth 2 Bsc</Button>
-          <Button variant="contained" color="primary">Swap Bsc 2 Eth</Button>
+          <div>
+            <button className={swapBtnsStyle}>Swap Eth 2 Bsc</button>
+            <button className={swapBtnsStyle}>Swap Bsc 2 Eth</button>
+          </div>
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
-          <Box className="text-center text-24">Binance Smart Chain</Box>
+          <Box className="text-center text-24 m-10">Binance Smart Chain</Box>
           <BscTokenSection></BscTokenSection>
         </Grid>
       </Grid>
