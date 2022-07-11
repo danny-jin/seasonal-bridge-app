@@ -7,7 +7,7 @@ import {
     FormHelperText
   } from "@material-ui/core";
 
-import { SeasonalTokens } from "../core/data/base";
+import { SeasonalTokens } from "../core/constants/base";
 
 function BscTokenSection() {
   const [season, SetSeason] = useState(0);
