@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
     InputLabel,
+    TextField,
     Select,
     MenuItem,
     FormControl,
@@ -24,7 +25,7 @@ function BscTokenSection() {
                 labelId="bsc-season-label"
                 value={season}
                 label="Season"
-                className="w-200"
+                className="w-200 my-10"
                 MenuProps={{
                   anchorOrigin: {
                     vertical: "bottom",
@@ -45,7 +46,8 @@ function BscTokenSection() {
             })
           }
         </Select>
-        <FormHelperText>Token Amount : {tokenAmount}</FormHelperText>
+        <TextField id="outlined-basic" label="Swap Token amount" variant="outlined" className="my-10" defaultValue="Small" size="small"/>
+        <FormHelperText>Current Token Amount : {tokenAmount}</FormHelperText>
       </FormControl>
     </div>
   );

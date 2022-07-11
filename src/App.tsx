@@ -8,7 +8,7 @@ import './App.css';
 
 function App() {
 
-  const swapButtonsStyle = 'rounded-md bg-paarl hover:bg-corvette w-155 h-40 text-white hover:text-black font-semibold m-5 b-1';
+  const swapButtonsStyle = 'rounded-md bg-paarl hover:bg-corvette w-200 text-white hover:text-black p-10 font-semibold m-5 b-1';
 
   return (
     <Layout>
