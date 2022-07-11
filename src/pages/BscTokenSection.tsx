@@ -39,7 +39,8 @@ function BscTokenSection() {
           {
             SeasonalTokens.map((season, index:number) => {
               return <MenuItem value={index} className="flex">
-                <img src={season.img} className="w-30 h-30"/><label className="font-50 ml-20">{season.name}</label>
+                <img src={season.img} className="w-30 h-30" alt={season.name}/>
+                <label className="font-50 ml-20">{season.name}</label>
               </MenuItem>;
             })
           }

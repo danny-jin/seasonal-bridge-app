@@ -8,26 +8,26 @@ import winterImg from "../../assets/images/tokens/winter.png";
 export const SeasonalTokens: SeasonalToken[] = [
     {
         name: 'Spring',
-        ethAddr: '',
-        bscAddr: '',
+        ethAddress: '',
+        bscAddress: '',
         img: springImg
     },
     {
         name: 'Summer',
-        ethAddr: '',
-        bscAddr: '',
+        ethAddress: '',
+        bscAddress: '',
         img: summerImg
     },
     {
         name: 'Autumn',
-        ethAddr: '',
-        bscAddr: '',
+        ethAddress: '',
+        bscAddress: '',
         img: autumnImg
     },
     {
         name: 'Winter',
-        ethAddr: '',
-        bscAddr: '',
+        ethAddress: '',
+        bscAddress: '',
         img: winterImg
     },
 ];
