@@ -12,7 +12,7 @@ const maxSpacingPixel = 1000;
 const spacingPixelIncrement = 5;
 
 module.exports = {
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   theme: {
     extend: {
       spacing: {

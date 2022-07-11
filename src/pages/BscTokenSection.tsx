@@ -46,7 +46,7 @@ function BscTokenSection() {
             })
           }
         </Select>
-        <TextField id="outlined-basic" label="Swap Token amount" variant="outlined" className="my-10" defaultValue="Small" size="small"/>
+        <TextField id="outlined-basic" label="Swap Token amount" variant="outlined" className="my-10" type="number" size="small"/>
         <FormHelperText>Current Token Amount : {tokenAmount}</FormHelperText>
       </FormControl>
     </div>
