@@ -4,19 +4,11 @@ import { IFrameEthereumProvider } from "@ledgerhq/iframe-provider";
 
 import React, { useState, ReactElement, useContext, useMemo, useCallback } from "react";
 import Web3Modal from "web3modal";
-import Web3 from 'web3';
 
-import { NetworkId, NetworkIds, networks, enabledNetworkIds } from "../networks";
 import store from "../core/store/store";
+import { NetworkId, NetworkIds, networks, enabledNetworkIds } from "../networks";
 import { error } from "../slices/MessagesSlice";
 import { chains } from "../providers";
-
-// const env = require("dotenv").config();
-const springABI = require('../abi/springABI.json');
-const etherProvider = new Web3.providers.WebsocketProvider("wss://rinkeby.infura.io/ws/v3/8cabb9938294442cb313eaa69e9ba8cf");
-const etherWeb3 = new Web3(etherProvider);
-const etherSpringAddr = "0xaa3648E6533028F422dc514b5EDe8Fb9171Bf8f2";
-const ethSpring = new etherWeb3.eth.Contract(springABI, etherSpringAddr);
 
 /**
  * determine if in IFrame for Ledger Live
@@ -83,6 +75,7 @@ export const getSavedNetworkId = () => {
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({children}) => {
+
   const [connected, setConnected] = useState(false);
 
   let defaultNetworkId = getSavedNetworkId() || NetworkIds.Rinkeby;
@@ -246,7 +239,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
     const connectedProvider = new Web3Provider(rawProvider, "any");
     const chainId = await connectedProvider.getNetwork().then(network => network.chainId);
     const connectedAddress = await connectedProvider.getSigner().getAddress();
-    console.log("Connected Wallet", connectedAddress);
     setAddress(connectedAddress);
     const validNetwork = _checkNetwork(chainId);
     if (!validNetwork) {
@@ -264,11 +256,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
     setProvider(connectedProvider);
     // Keep this at the bottom of the method, to ensure any repaints have the data we need
     setConnected(true);
-
-    //get eth spring amount
-    const result = await ethSpring.methods.balanceOf(connectedAddress).call(); // 29803630997051883414242659
-    // const format = Web3Client.utils.fromWei(result); // 29803630.997051883414242659
-    console.log(result);
 
     return connectedProvider;
   }, [provider, web3Modal, connected]);
@@ -301,6 +288,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
   const getCurrentTokenAmounts = () => {
 
   };
-  
+
   return <Web3Context.Provider value={{onChainProvider}}>{children}</Web3Context.Provider>;
 };
