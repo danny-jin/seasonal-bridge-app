@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 
+import { Web3ContextProvider } from "./hooks/web3Context";
+
 import App from './App';
 import store from './core/store/store';
 import reportWebVitals from './reportWebVitals';
@@ -13,9 +15,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Web3ContextProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Web3ContextProvider>
   </React.StrictMode>
 );
 

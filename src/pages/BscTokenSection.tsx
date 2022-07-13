@@ -39,14 +39,14 @@ function BscTokenSection() {
                 }} >
           {
             SeasonalTokens.map((season, index:number) => {
-              return <MenuItem value={index} className="flex">
+              return <MenuItem value={index} className="flex" key={index}>
                 <img src={season.img} className="w-30 h-30" alt={season.name}/>
                 <label className="font-50 ml-20">{season.name}</label>
               </MenuItem>;
             })
           }
         </Select>
-        <TextField id="outlined-basic" label="Swap Token amount" variant="outlined" className="my-10" type="number" size="small"/>
+        <TextField id="outlined-basic" label="Swap Token amount" variant="outlined" className="my-10" type="number" size="small" inputProps={{ min: 0 }}/>
         <FormHelperText>Current Token Amount : {tokenAmount}</FormHelperText>
       </FormControl>
     </div>
