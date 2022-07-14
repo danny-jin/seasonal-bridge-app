@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
     InputLabel,
     TextField ,
@@ -7,23 +6,20 @@ import {
     FormControl,
     FormHelperText
   } from "@material-ui/core";
+// import React, { useState } from "react";
 
 import { SeasonalTokens } from "../core/constants/base";
 
-function EthTokenSection() {
-  const [season, SetSeason] = useState(0);
-  const [tokenAmount, SetTokenAmount] = useState(0);
-  const handleChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => {
-    SetSeason(event.target.value as number);
-  };
+function EthTokenSection(props:any) {
+  // const [tokenAmount, setTokenAmount] = useState(0);
   return (
     <div className="flex justify-center items-center">
       <FormControl variant="standard">
         <InputLabel id="eth-season-label">Season</InputLabel>
-        <Select onChange={handleChange}
+        <Select onChange={props.onChange}
                 id="eth-season"
                 labelId="eth-season-label"
-                value={season}
+                value={props.season}
                 label="Season"
                 className="w-200 my-10"
                 MenuProps={{
@@ -47,7 +43,7 @@ function EthTokenSection() {
           }
         </Select>
         <TextField id="outlined-basic" label="Swap Token amount" variant="outlined" className="my-10" type="number" size="small" inputProps={{ min: 0 }}/>
-        <FormHelperText>Current Token Amount : {tokenAmount}</FormHelperText>
+        <FormHelperText>Token Amount : {props.amount}</FormHelperText>
       </FormControl>
     </div>
   );

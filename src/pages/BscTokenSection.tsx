@@ -1,29 +1,30 @@
-import React, { useState } from "react";
 import {
-    InputLabel,
-    TextField,
-    Select,
-    MenuItem,
-    FormControl,
-    FormHelperText
-  } from "@material-ui/core";
+  InputLabel,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  FormHelperText
+} from "@material-ui/core";
+// import React, { useState, useEffect } from "react";
+// import { useSelector, useDispatch } from "react-redux";
+// import { changeSeasonal } from "../core/store/slice/bridgeSlice";
 
 import { SeasonalTokens } from "../core/constants/base";
 
-function BscTokenSection() {
-  const [season, SetSeason] = useState(0);
-  const [tokenAmount, SetTokenAmount] = useState(0);
-  const handleChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => {
-    SetSeason(event.target.value as number);
-  };
+function BscTokenSection(props:any) {
+  // const dispatch = useDispatch();
+  // const [season, setSeason] = useState(props.season);
+  // const [tokenAmount, SetTokenAmount] = useState(0);
+
   return (
     <div className="flex justify-center items-center">
       <FormControl variant="standard">
         <InputLabel id="bsc-season-label">Season</InputLabel>
-        <Select onChange={handleChange}
+        <Select onChange={props.onChange}
                 id="bsc-season"
                 labelId="bsc-season-label"
-                value={season}
+                value={props.season}
                 label="Season"
                 className="w-200 my-10"
                 MenuProps={{
@@ -47,7 +48,7 @@ function BscTokenSection() {
           }
         </Select>
         <TextField id="outlined-basic" label="Swap Token amount" variant="outlined" className="my-10" type="number" size="small" inputProps={{ min: 0 }}/>
-        <FormHelperText>Current Token Amount : {tokenAmount}</FormHelperText>
+        <FormHelperText>Token Amount : {props.amount}</FormHelperText>
       </FormControl>
     </div>
   );
