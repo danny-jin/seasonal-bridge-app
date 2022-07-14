@@ -7,7 +7,7 @@ import { useWeb3Context } from "./hooks/web3Context";
 import Layout from './layout';
 import EthTokenSection from './pages/EthTokenSection';
 import BscTokenSection from './pages/BscTokenSection';
-import {etherWeb3, EthSeasonalContracts} from './core/constants/base';
+import {etherWeb3, EthSeasonalContracts, bscWeb3, BscSeasonalContracts} from './core/constants/base';
 import './App.css';
 
 function App() {
@@ -25,9 +25,12 @@ function App() {
         try {
           const ethSeasonalContract = EthSeasonalContracts[season];
           const ethAmount = await ethSeasonalContract.methods.balanceOf(address).call();
-          const format = parseFloat(etherWeb3.utils.fromWei(ethAmount, 'ether'));
-          setEthAmount(format);
-          setBscAmount(100);
+          const format1 = parseFloat(etherWeb3.utils.fromWei(ethAmount, 'ether'));
+          setEthAmount(format1);
+          const bscSeasonalContract = BscSeasonalContracts[season];
+          const bscAmount = await ethSeasonalContract.methods.balanceOf(address).call();
+          const format2 = parseFloat(bscWeb3.utils.fromWei(ethAmount, 'ether'));
+          setBscAmount(format2);
         } catch (error) {
           console.log(error);
         }

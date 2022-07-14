@@ -25,7 +25,19 @@ const ethAutumn = new etherWeb3.eth.Contract(autumnABI, etherAutumnAddr);
 const ethWinter = new etherWeb3.eth.Contract(winterABI, etherWinterAddr);
 export const EthSeasonalContracts = [ethSpring, ethSummer, ethAutumn, ethWinter];
 
-const BscSeasonalAddress = [];
+const bscProvider = new Web3.providers.WebsocketProvider("wss://data-seed-prebsc-1-s2.binance.org/ws:8545");
+export const bscWeb3 = new Web3(bscProvider);
+
+const bscSpringAddr = '0xe9ec6407f99b54b29D43B74ed286503c9Effd60F';
+const bscSummerAddr = '0x02DF25f221C38987A628fc9F3F8059c0C5B204E0';
+const bscAutumnAddr = '0xfACb7C553468AFDAA2000B237688d3271E538725';
+const bscWinterAddr = '0x4D44480F157DE93027E8c7dC26836aFeeEDDC946';
+const bscSpring = new bscWeb3.eth.Contract(springABI, bscSpringAddr);
+const bscSummer = new bscWeb3.eth.Contract(summerABI, bscSummerAddr);
+const bscAutumn = new bscWeb3.eth.Contract(autumnABI, bscAutumnAddr);
+const bscWinter = new bscWeb3.eth.Contract(winterABI, bscWinterAddr);
+
+export const BscSeasonalContracts = [bscSpring, bscSummer, bscAutumn, bscWinter];
 
 export const SeasonalTokens: SeasonalToken[] = [
     {
