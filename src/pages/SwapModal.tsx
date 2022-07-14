@@ -6,7 +6,7 @@ import {
 import { SeasonalTokens } from "../core/constants/base";
 
 const SwapModal = (props: any) => {
-  const buttonStyle = 'p-10 px-20 border-2 border-vavewl';
+  const buttonStyle = 'p-10 px-20 border-2 border-vavewl m-10';
   return (
     <Modal open={props.open} onClose={() => props.onClose(null)}>
       <Fade in={props.open}>
@@ -18,10 +18,10 @@ const SwapModal = (props: any) => {
                 ( <label>Your token amount is less than swap amount.</label> )
               )
           }</Box>
-          <Box>
+          <Box className="m-10">
             <Box>{SeasonalTokens[props.season].name} : {props.amount}</Box>
           </Box>
-          <Box>
+          <Box className="m-10">
             <button className={buttonStyle}>Approve</button>
             <button className={buttonStyle}>Swap</button>
           </Box>

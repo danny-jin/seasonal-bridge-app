@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import { useWeb3Context } from "./hooks/web3Context";
 
-import Layout from './layout';
+import Layout from "./layout";
 import SwapModal from "./pages/SwapModal";
 import EthTokenSection from './pages/EthTokenSection';
 import BscTokenSection from './pages/BscTokenSection';
