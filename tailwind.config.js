@@ -60,6 +60,7 @@ module.exports = {
         current: 'currentColor',
         paarl: '#9C622E',
         corvette: '#FACB99',
+        vavewl: '#9DCCEA',
       },
       margin: (theme, { negative }) => ({
         auto: 'auto',

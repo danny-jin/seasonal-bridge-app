@@ -20,9 +20,17 @@ function App() {
   const [swapModalOpen, setSwapModalOpen] = useState(false);
   const [swapLoading, setSwapLoading] = useState(false);
   const [swapAmount, setSwapAmount] = useState(0);
+  const [swapEthAmount, setSwapEthAmount] = useState(0);
+  const [swapBscAmount, setSwapBscAmount] = useState(0);
 
   const handleChange = (event: any) => {
     setSeason(event.target.value as number);
+  };
+  const swapEthMountInput = (event: any) => {
+    setSwapEthAmount(event.target.value as number);
+  };
+  const swapBscMountInput = (event: any) => {
+    setSwapBscAmount(event.target.value as number);
   };
   useEffect(() => {
     if (address != ''){
@@ -50,6 +58,20 @@ function App() {
 
   const openSwapModal = (type:string) => {
     setSwapModalOpen(true);
+    if (type == 'eth2bsc') {
+      setSwapAmount(swapEthAmount);
+      if (swapEthAmount > ethAmount) {
+        setSwapType('big_amount');
+        return;
+      }
+    }
+    if (type == 'bsc2eth') {
+      setSwapAmount(swapBscAmount);
+      if (swapBscAmount > bscAmount) {
+        setSwapType('big_amount');
+        return;
+      }
+    }
     setSwapType(type);
   };
   const closeSwapModal = () => {
@@ -60,7 +82,7 @@ function App() {
       <Grid container spacing={ 1 }>
         <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
           <Box className="text-center text-24 m-10">Ethereum</Box>
-          <EthTokenSection season={season} onChange={handleChange} amount={ethAmount} swapamount={swapAmount} />
+          <EthTokenSection season={season} onChange={handleChange} amount={ethAmount} swapamount={swapEthAmount}  onSwapAmountChange = {swapEthMountInput}/>
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 2 } className="justify-box flex flex-col justify-around">
           <div>
@@ -70,10 +92,10 @@ function App() {
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
           <Box className="text-center text-24 m-10">Binance Smart Chain</Box>
-          <BscTokenSection season={season} onChange={handleChange} amount={bscAmount} swapamount={swapAmount} />
+          <BscTokenSection season={season} onChange={handleChange} amount={bscAmount} swapamount={swapBscAmount} onSwapAmountChange = {swapBscMountInput}/>
         </Grid>
       </Grid>
-      <SwapModal type={ swapType } open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} />
+      <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} />
     </Layout>
   );
 }
