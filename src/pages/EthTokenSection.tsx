@@ -42,7 +42,7 @@ function EthTokenSection(props:any) {
             })
           }
         </Select>
-        <TextField id="outlined-basic" label="Swap Token amount" variant="outlined" className="my-10" type="number" size="small" inputProps={{ min: 0 }}/>
+        <TextField id="outlined-basic" label="Swap Token amount" variant="outlined" value={props.swapamount} className="my-10" type="number" size="small" inputProps={{ min: 0 }}/>
         <FormHelperText>Token Amount : {props.amount}</FormHelperText>
       </FormControl>
     </div>
