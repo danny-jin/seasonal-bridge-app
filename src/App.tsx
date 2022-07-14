@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useWeb3Context } from "./hooks/web3Context";
 
 import Layout from "./layout";
-import SwapModal from "./pages/SwapModal";
+import SwapModal from "./pages/swapModal";
 import EthTokenSection from './pages/EthTokenSection';
 import BscTokenSection from './pages/BscTokenSection';
 import {etherWeb3, EthSeasonalContracts, bscWeb3, BscSeasonalContracts} from './core/constants/base';

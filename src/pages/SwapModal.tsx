@@ -3,10 +3,20 @@ import {
   Modal,
   Fade
 } from "@material-ui/core";
+import { useState, useEffect } from "react";
 import { SeasonalTokens } from "../core/constants/base";
 
+import { useWeb3Context } from "../hooks/web3Context";
+import {etherWeb3, EthSeasonalContracts, ethBridge, bscWeb3, BscSeasonalContracts, bscBridge} from '../core/constants/base';
+
 const SwapModal = (props: any) => {
+  const { connected, address } = useWeb3Context();
   const buttonStyle = 'p-10 px-20 border-2 border-vavewl m-10';
+  const [approved, setApproved] = useState(false);
+  useEffect(() => {
+
+  }, []);
+
   return (
     <Modal open={props.open} onClose={() => props.onClose(null)}>
       <Fade in={props.open}>
@@ -22,8 +32,11 @@ const SwapModal = (props: any) => {
             <Box>{SeasonalTokens[props.season].name} : {props.amount}</Box>
           </Box>
           <Box className="m-10">
-            <button className={buttonStyle}>Approve</button>
-            <button className={buttonStyle}>Swap</button>
+            {
+              approved ? ( <button className={buttonStyle}>Approve</button> ) : 
+                ( <button className={buttonStyle}>Swap</button> )
+            }
+            
           </Box>
         </Box>
       </Fade>
