@@ -39,16 +39,16 @@ function App() {
     if (address != '') {
       try {
         const ethAmount = await EthSeasonalContracts[season].methods.balanceOf(address).call();
-        const format1 = parseFloat(etherWeb3.utils.fromWei(ethAmount, 'ether'));
-        setEthAmount(format1);
+        const format = parseFloat(etherWeb3.utils.fromWei(ethAmount, 'ether'));
+        setEthAmount(parseInt(ethAmount));
       } catch (error) {
         console.log(error);
       }
 
       try {
         const bscAmount = await BscSeasonalContracts[season].methods.balanceOf(address).call();
-        const format1 = parseFloat(bscWeb3.utils.fromWei(bscAmount, 'ether'));
-        setBscAmount(format1);
+        const format = parseFloat(bscWeb3.utils.fromWei(bscAmount, 'ether'));
+        setBscAmount(format);
       } catch (error) {
         console.log(error);
       }
@@ -71,7 +71,7 @@ function App() {
     setSwapModalOpen(true);
     if (type == 'eth2bsc') {
       setSwapAmount(swapEthAmount);
-      if (swapEthAmount > ethAmount) {
+      if (parseFloat(swapEthAmount.toString()) > ethAmount) {
         setSwapType('big_amount');
         return;
       }

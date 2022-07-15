@@ -1,18 +1,7 @@
-
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
 import { useWeb3Context } from "../../hooks/web3Context";
-import { setWalletAddress, getSeasonalTokens } from "../../core/store/slice/bridgeSlice";
 
 const ConnectWalletButton = () => {  
-  const dispatch = useDispatch();
   const { connect, disconnect, address } = useWeb3Context();
-  const walletAddress = useSelector((state:any) => {return state.app.walletAddress;});
-  useEffect(()=>{
-    // dispatch(setWalletAddress(address));
-    dispatch(getSeasonalTokens(address));
-  }, [address]);
   return (
     <div>
       {

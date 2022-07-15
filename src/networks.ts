@@ -1,35 +1,17 @@
 import React from "react";
-
-import FantomIcon from "./assets/images/networks/fantom_icon.svg";
-import RinkebyIcon from "./assets/images/networks/rinkeby_icon.svg";
-import { ReactComponent as MoonriverIcon } from "./assets/images/networks/moonriver_icon.svg";
-import { ReactComponent as MoonbaseAlphaIcon } from "./assets/images/networks/moonbase_alpha_icon.svg";
-import { ReactComponent as EthereumIcon } from "./assets/images/networks/ethereum_icon.svg";
-import { ReactComponent as BscIcon } from "./assets/images/networks/bsc_icon.svg";
-import { ReactComponent as AvalancheIcon } from "./assets/images/networks/avalanche_icon.svg";
-import { ReactComponent as PolygonIcon } from "./assets/images/networks/polygon_icon.svg";
-import { ReactComponent as HarmonyIcon } from "./assets/images/networks/harmony_icon.svg";
-import { ReactComponent as ArbitrumIcon } from "./assets/images/networks/arbitrum_icon.svg";
-
-// import { dark as darkTheme } from "./themes/dark.js";
-// import { river as riverTheme } from "./themes/river.js";
-// import { DebugHelper } from "../helpers/DebugHelper";
-
+import springABI from './abi/springABI.json';
+import summerABI from './abi/autumnABI.json';
+import autumnABI from './abi/autumnABI.json';
+import winterABI from './abi/winterABI.json';
+import ethBridgeABI from './abi/ethBridgeABI.json';
+import bscBridgeABI from './abi/bscBridgeABI.json';
 export type NetworkId = number;
 
 export enum NetworkIds {
   Ethereum = 1,
   Rinkeby = 4,
   Bsc = 56,
-  FantomOpera = 250,
-  FantomTestnet = 4002,
-  Moonriver = 1285,
-  MoonbaseAlpha = 1287,
-  Boba = 288,
-  Avalanche = 43114,
-  Polygon = 137,
-  Harmony = 1666600000,
-  Arbitrum = 42161,
+  BscTestnet = 97,
 }
 
 // TODO once for a while update block times, use yesterday's value as today is not complete day
@@ -38,21 +20,7 @@ export enum NetworkIds {
 
 interface INetwork {
   name: string,
-  logo: any,
-  theme: any,
   isEnabled: boolean,
-  isTestNet: boolean,
-  blocktime: number, // NOTE could get this from an outside source since it changes slightly over time
-  epochBlock: number,
-  epochInterval: number,
-  blockCountdownUrl: (block: number) => string,
-  getEtherscanUrl: (txnHash: string) => string,
-  getPoolTogetherUrls: (contractAddress: string) => string[],
-  poolGraphUrl: string,
-  liquidityPoolReserveDecimals: {
-    token0Decimals: number,
-    token1Decimals: number,
-  },
   addresses: { [key: string]: string }
 }
 
@@ -61,9 +29,62 @@ interface INetworks {
 }
 
 export const networks: INetworks = {
-
+  [NetworkIds.Rinkeby]: {
+    name: 'Ethereum Rinkeby',
+    isEnabled: true,
+    addresses: {
+      SPRING: '0xaa3648E6533028F422dc514b5EDe8Fb9171Bf8f2',
+      SUMMER: '0x37eeB07454332dC47cEE7D91e9DcB51D19317806',
+      AUTUMN: '0x18349631F5F39CdbcEd344a1EB8cE20A1C884EBB',
+      WINTER: '0x40e076f7E6757e8bdb6BdF4d8512404A56039a64',
+      ETH_BRIDGE: '0xEf3B7C80d2aAaC5Ed2689Bd0D35A5e69b93D4b9E'
+    }
+  },
+  [NetworkIds.BscTestnet]: {
+    name: 'BSC Testnet',
+    isEnabled: true,
+    addresses: {
+      SPRING: '0xe9ec6407f99b54b29D43B74ed286503c9Effd60F',
+      SUMMER: '0x02DF25f221C38987A628fc9F3F8059c0C5B204E0',
+      AUTUMN: '0xfACb7C553468AFDAA2000B237688d3271E538725',
+      WINTER: '0x4D44480F157DE93027E8c7dC26836aFeeEDDC946',
+      BSC_BRIDGE: '0x68C41083cE39b48Eb06a824A28336Cdb21A795DD'
+    }
+  },
+  [NetworkIds.Ethereum]: {
+    name: 'BSC Testnet',
+    isEnabled: true,
+    addresses: {
+      SPRING: '',
+      SUMMER: '',
+      AUTUMN: '',
+      WINTER: '',
+      ETH_BRIDGE: ''
+    }
+  },
+  [NetworkIds.Bsc]: {
+    name: 'BSC Testnet',
+    isEnabled: true,
+    addresses: {
+      SPRING: '',
+      SUMMER: '',
+      AUTUMN: '',
+      WINTER: '',
+      BSC_BRIDGE: ''
+    }
+  }
 };
 
+interface SeasonalABIS {
+  [key: string]: any;
+};
+export const contractABIs: SeasonalABIS = {
+  SPRING: springABI,
+  SUMMER: summerABI,
+  AUTUMN: autumnABI,
+  WINTER: winterABI,
+  ETH_BRIDGE: ethBridgeABI,
+  BSC_BRIDGE: bscBridgeABI
+}
+
 export const enabledNetworkIds: NetworkId[] = Object.keys(networks).map(networkId => parseInt(networkId)).filter(networkId => networks[networkId].isEnabled);
-export const enabledNetworkIdsExceptDexOnly: NetworkId[] = Object.keys(networks).map(networkId => parseInt(networkId)).filter(networkId => networks[networkId].isEnabled && networkId !== NetworkIds.Bsc && networkId !== NetworkIds.Ethereum && networkId !== NetworkIds.Avalanche && networkId !== NetworkIds.Polygon && networkId !== NetworkIds.Harmony && networkId !== NetworkIds.Arbitrum);
-export const enabledMainNetworkIds: NetworkId[] = enabledNetworkIds.filter(networkId => !networks[networkId].isTestNet);
