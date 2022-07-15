@@ -28,7 +28,6 @@ export const bridgeSlice = createSlice({
       if ( currentAddress != '' ) {
         const result = await EthSeasonalContracts[0].methods.balanceOf(currentAddress).call(); // 29803630997051883414242659
         const format = etherWeb3.utils.fromWei(result, 'ether'); // 29803630.997051883414242659
-        console.log(format);
         // const count = EthSeasonalContracts.map( async function(contract){
         //   const result = await contract.methods.balanceOf(currentAddress).call(); // 29803630997051883414242659
         //   const format = etherWeb3.utils.fromWei(result, 'ether'); // 29803630.997051883414242659

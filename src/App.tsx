@@ -32,33 +32,36 @@ function App() {
     setSwapBscAmount(event.target.value as number);
   };
   useEffect(() => {
-    if (address != ''){
-      const getTokenAmounts = async () => {
-        try {
-          const ethSeasonalContract = EthSeasonalContracts[season];
-          const ethAmount = await ethSeasonalContract.methods.balanceOf(address).call();
-          const format1 = parseFloat(etherWeb3.utils.fromWei(ethAmount, 'ether'));
-          setEthAmount(format1);
-          // const bscSeasonalContract = BscSeasonalContracts[season];
-          // const bscAmount = await ethSeasonalContract.methods.balanceOf(address).call();
-          // const format2 = parseFloat(bscWeb3.utils.fromWei(ethAmount, 'ether'));
-          // setBscAmount(format2);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getTokenAmounts();
+    getCurrentAmount();
+  }, [season, connected]);
+
+  const getCurrentAmount = async () => {
+    if (address != '') {
+      try {
+        const ethAmount = await EthSeasonalContracts[season].methods.balanceOf(address).call();
+        const format1 = parseFloat(etherWeb3.utils.fromWei(ethAmount, 'ether'));
+        setEthAmount(format1);
+      } catch (error) {
+        console.log(error);
+      }
+
+      try {
+        const bscAmount = await BscSeasonalContracts[season].methods.balanceOf(address).call();
+        const format1 = parseFloat(bscWeb3.utils.fromWei(bscAmount, 'ether'));
+        setBscAmount(format1);
+      } catch (error) {
+        console.log(error);
+      }
     }
     else {
       setEthAmount(0);
       setBscAmount(0);
     }
-  }, [season, connected]);
-
-  const openSwapModal = (type:string) => {
+  };
+  const openSwapModal = async (type:string) => {
     if(!connected){
       try {
-        connect();
+        await connect();
       }
       catch(error){
         console.log(error);
@@ -103,7 +106,7 @@ function App() {
           <BscTokenSection season={season} onChange={handleChange} amount={bscAmount} swapamount={swapBscAmount} onSwapAmountChange = {swapBscMountInput}/>
         </Grid>
       </Grid>
-      <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} />
+      <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={getCurrentAmount}/>
     </Layout>
   );
 }

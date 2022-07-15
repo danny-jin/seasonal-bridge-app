@@ -14,7 +14,7 @@ const winterABI = require('../../abi/winterABI.json');
 const ethBridgeABI = require('../../abi/ethBridgeABI.json');
 const bscBridgeABI = require('../../abi/bscBridgeABI.json');
 
-const etherProvider = new Web3.providers.WebsocketProvider("wss://rinkeby.infura.io/ws/v3/8cabb9938294442cb313eaa69e9ba8cf");
+const etherProvider = new Web3.providers.WebsocketProvider("wss://rinkeby.infura.io/ws/v3/1ff71c39bddd4d93971b23697b82bc0e");
 export const etherWeb3 = new Web3(Web3.givenProvider);
 // export const etherWeb3 = new Web3(etherProvider);
 
@@ -31,14 +31,14 @@ export const ethBridge = new etherWeb3.eth.Contract(ethBridgeABI, etherBridgeAdd
 export const EthSeasonalContracts = [ethSpring, ethSummer, ethAutumn, ethWinter];
 // export const EthSeasonalAddress = [etherSpringAddr, etherSummerAddr, etherAutumnAddr, etherWinterAddr];
 
-const bscProvider = new Web3.providers.WebsocketProvider("wss://data-seed-prebsc-1-s2.binance.org:8545/ws");
+const bscProvider = new Web3.providers.WebsocketProvider("wss://thrumming-weathered-frost.bsc-testnet.discover.quiknode.pro/31130ceb74ac83c82dbb6e19416e11ca66633c3a/");
 export const bscWeb3 = new Web3(bscProvider);
 
 const bscSpringAddr = '0xe9ec6407f99b54b29D43B74ed286503c9Effd60F';
 const bscSummerAddr = '0x02DF25f221C38987A628fc9F3F8059c0C5B204E0';
 const bscAutumnAddr = '0xfACb7C553468AFDAA2000B237688d3271E538725';
 const bscWinterAddr = '0x4D44480F157DE93027E8c7dC26836aFeeEDDC946';
-const bscBridgeAddr = '';
+export const bscBridgeAddr = '0x68C41083cE39b48Eb06a824A28336Cdb21A795DD';
 const bscSpring = new bscWeb3.eth.Contract(springABI, bscSpringAddr);
 const bscSummer = new bscWeb3.eth.Contract(summerABI, bscSummerAddr);
 const bscAutumn = new bscWeb3.eth.Contract(autumnABI, bscAutumnAddr);
