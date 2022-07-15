@@ -240,6 +240,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
     const chainId = await connectedProvider.getNetwork().then(network => network.chainId);
     const connectedAddress = await connectedProvider.getSigner().getAddress();
     setAddress(connectedAddress);
+    console.log("[wallet address] : ",connectedAddress);
     const validNetwork = _checkNetwork(chainId);
     if (!validNetwork) {
       const switched = await switchEthereumChain(defaultNetworkId, true);

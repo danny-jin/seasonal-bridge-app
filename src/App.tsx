@@ -11,17 +11,16 @@ import BscTokenSection from './pages/BscTokenSection';
 import {etherWeb3, EthSeasonalContracts, bscWeb3, BscSeasonalContracts} from './core/constants/base';
 import './App.css';
 function App() {
-  const { connected, address } = useWeb3Context();
+  const { connected, connect, address } = useWeb3Context();
   const swapButtonsStyle = 'rounded-md bg-paarl hover:bg-corvette w-200 text-white hover:text-black p-10 font-semibold m-5 b-1';
   const [season,setSeason] = useState(0);
   const [ethAmount, setEthAmount] = useState(0);
   const [bscAmount, setBscAmount] = useState(0);
   const [swapType, setSwapType] = useState('eth2bsc');
   const [swapModalOpen, setSwapModalOpen] = useState(false);
-  const [swapLoading, setSwapLoading] = useState(false);
   const [swapAmount, setSwapAmount] = useState(0);
-  const [swapEthAmount, setSwapEthAmount] = useState(0);
-  const [swapBscAmount, setSwapBscAmount] = useState(0);
+  const [swapEthAmount, setSwapEthAmount] = useState(100);
+  const [swapBscAmount, setSwapBscAmount] = useState(100);
 
   const handleChange = (event: any) => {
     setSeason(event.target.value as number);
@@ -40,10 +39,10 @@ function App() {
           const ethAmount = await ethSeasonalContract.methods.balanceOf(address).call();
           const format1 = parseFloat(etherWeb3.utils.fromWei(ethAmount, 'ether'));
           setEthAmount(format1);
-          const bscSeasonalContract = BscSeasonalContracts[season];
-          const bscAmount = await ethSeasonalContract.methods.balanceOf(address).call();
-          const format2 = parseFloat(bscWeb3.utils.fromWei(ethAmount, 'ether'));
-          setBscAmount(format2);
+          // const bscSeasonalContract = BscSeasonalContracts[season];
+          // const bscAmount = await ethSeasonalContract.methods.balanceOf(address).call();
+          // const format2 = parseFloat(bscWeb3.utils.fromWei(ethAmount, 'ether'));
+          // setBscAmount(format2);
         } catch (error) {
           console.log(error);
         }
@@ -57,6 +56,15 @@ function App() {
   }, [season, connected]);
 
   const openSwapModal = (type:string) => {
+    if(!connected){
+      try {
+        connect();
+      }
+      catch(error){
+        console.log(error);
+        return;
+      }
+    }
     setSwapModalOpen(true);
     if (type == 'eth2bsc') {
       setSwapAmount(swapEthAmount);
