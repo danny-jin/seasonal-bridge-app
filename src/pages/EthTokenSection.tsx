@@ -34,10 +34,10 @@ function EthTokenSection(props:any) {
                   getContentAnchorEl: null
                 }}  >
           {
-            SeasonalTokens.map((season, index:number) => {
-              return <MenuItem value={index} className="flex" key={index}>
-                <img src={season.img} className="w-30 h-30" alt={season.name}/>
-                <label className="font-50 ml-20">{season.name}</label>
+            Object.keys(SeasonalTokens).map((season, index:number) => {
+              return <MenuItem value={season} className="flex" key={index}>
+                <img src={SeasonalTokens[season].img} className="w-30 h-30" alt={season}/>
+                <label className="font-50 ml-20">{season}</label>
               </MenuItem>;
             })
           }

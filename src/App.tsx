@@ -1,6 +1,6 @@
 import { Box, Grid } from "@material-ui/core";
 import React, {useState, useEffect} from 'react';
-import { useSelector } from "react-redux";
+import Web3 from 'web3';
 
 import { useWeb3Context } from "./hooks/web3Context";
 
@@ -8,22 +8,23 @@ import Layout from "./layout";
 import SwapModal from "./pages/swapModal";
 import EthTokenSection from './pages/EthTokenSection';
 import BscTokenSection from './pages/BscTokenSection';
-import {etherWeb3, EthSeasonalContracts, bscWeb3, BscSeasonalContracts} from './core/constants/base';
+import {ethWeb3, bscWeb3, SeasonalTokens} from './core/constants/base';
+import { NetworkIds } from "./networks";
 import './App.css';
+
 function App() {
-  const { connected, connect, address } = useWeb3Context();
+  const { connected, connect, address, switchEthereumChain, provider } = useWeb3Context();
   const swapButtonsStyle = 'rounded-md bg-paarl hover:bg-corvette w-200 text-white hover:text-black p-10 font-semibold m-5 b-1';
-  const [season,setSeason] = useState(0);
-  const [ethAmount, setEthAmount] = useState(0);
-  const [bscAmount, setBscAmount] = useState(0);
+  const [season,setSeason] = useState('SPRING');
+  const [ethAmount, setEthAmount] = useState('0');
+  const [bscAmount, setBscAmount] = useState('0');
   const [swapType, setSwapType] = useState('eth2bsc');
   const [swapModalOpen, setSwapModalOpen] = useState(false);
   const [swapAmount, setSwapAmount] = useState(0);
   const [swapEthAmount, setSwapEthAmount] = useState(100);
   const [swapBscAmount, setSwapBscAmount] = useState(100);
-
   const handleChange = (event: any) => {
-    setSeason(event.target.value as number);
+    setSeason(event.target.value);
   };
   const swapEthMountInput = (event: any) => {
     setSwapEthAmount(event.target.value as number);
@@ -38,24 +39,24 @@ function App() {
   const getCurrentAmount = async () => {
     if (address != '') {
       try {
-        const ethAmount = await EthSeasonalContracts[season].methods.balanceOf(address).call();
-        const format = parseFloat(etherWeb3.utils.fromWei(ethAmount, 'ether'));
-        setEthAmount(parseInt(ethAmount));
+        const ethAmount = await SeasonalTokens[season].ethContract.methods.balanceOf(address).call();
+        const format = ethWeb3.utils.fromWei(ethAmount, 'ether');
+        setEthAmount(format);
       } catch (error) {
         console.log(error);
       }
 
       try {
-        const bscAmount = await BscSeasonalContracts[season].methods.balanceOf(address).call();
-        const format = parseFloat(bscWeb3.utils.fromWei(bscAmount, 'ether'));
+        const bscAmount = await SeasonalTokens[season].bscContract.methods.balanceOf(address).call();
+        const format = bscWeb3.utils.fromWei(bscAmount, 'ether');
         setBscAmount(format);
       } catch (error) {
         console.log(error);
       }
     }
     else {
-      setEthAmount(0);
-      setBscAmount(0);
+      setEthAmount('0');
+      setBscAmount('0');
     }
   };
   const openSwapModal = async (type:string) => {
@@ -70,15 +71,17 @@ function App() {
     }
     setSwapModalOpen(true);
     if (type == 'eth2bsc') {
+      await switchEthereumChain(NetworkIds.Rinkeby, true);
       setSwapAmount(swapEthAmount);
-      if (parseFloat(swapEthAmount.toString()) > ethAmount) {
+      if (parseFloat(swapEthAmount.toString()) > parseFloat(ethAmount)) {
         setSwapType('big_amount');
         return;
       }
     }
     if (type == 'bsc2eth') {
+      await switchEthereumChain(NetworkIds.BscTestnet, true);
       setSwapAmount(swapBscAmount);
-      if (swapBscAmount > bscAmount) {
+      if (parseFloat(swapBscAmount.toString()) > parseFloat(bscAmount)) {
         setSwapType('big_amount');
         return;
       }
@@ -88,6 +91,7 @@ function App() {
   const closeSwapModal = () => {
     setSwapModalOpen(false);
   };
+  
   return (
     <Layout>
       <Grid container spacing={ 1 }>

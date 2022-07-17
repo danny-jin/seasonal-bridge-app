@@ -73,7 +73,8 @@ export const chains: AllChainDetails = {
   [NetworkIds.Rinkeby]: new ChainDetails({
     networkName: 'Rinkeby',
     rpcUrls: [
-      'https://rinkeby.infura.io/v3/1ff71c39bddd4d93971b23697b82bc0e',
+      // 'https://rinkeby.infura.io/v3/1ff71c39bddd4d93971b23697b82bc0e',
+      'https://eth-rinkeby.alchemyapi.io/v2/y1kcvsoSiVJTHDHfhIjt21dDrm-2vtPe'
     ],
     symbol: 'ETH',
     decimals: 18,
@@ -82,8 +83,9 @@ export const chains: AllChainDetails = {
   [NetworkIds.Bsc]: new ChainDetails({
     networkName: 'Rinkeby',
     rpcUrls: [
+      'https://thrumming-weathered-frost.bsc-testnet.discover.quiknode.pro/31130ceb74ac83c82dbb6e19416e11ca66633c3a/',
     ],
-    symbol: 'ETH',
+    symbol: 'BNB',
     decimals: 18,
     blockExplorerUrls: [],
   }),
@@ -92,7 +94,7 @@ export const chains: AllChainDetails = {
     rpcUrls: [
       'https://thrumming-weathered-frost.bsc-testnet.discover.quiknode.pro/31130ceb74ac83c82dbb6e19416e11ca66633c3a/',
     ],
-    symbol: 'ETH',
+    symbol: 'TBNB',
     decimals: 18,
     blockExplorerUrls: [],
   }),

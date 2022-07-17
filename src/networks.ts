@@ -11,7 +11,7 @@ export enum NetworkIds {
   Ethereum = 1,
   Rinkeby = 4,
   Bsc = 56,
-  BscTestnet = 97,
+  BscTestnet = 97
 }
 
 // TODO once for a while update block times, use yesterday's value as today is not complete day

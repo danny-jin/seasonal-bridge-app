@@ -1,6 +1,6 @@
 export interface SeasonalToken {
     name: string;
-    ethAddress: string;
-    bscAddress: string;
+    ethContract: any;
+    bscContract: any;
     img: any;
 }
