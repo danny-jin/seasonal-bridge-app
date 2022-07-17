@@ -17,6 +17,7 @@ const SwapModal = (props: any) => {
   const [swapLoading, setSwapLoading] = useState(false);
   const ethBridgeAddress = networks[NetworkIds.Rinkeby].addresses.ETH_BRIDGE;
   const bscBridgeAddress = networks[NetworkIds.BscTestnet].addresses.BSC_BRIDGE;
+
   useEffect(() => {
     if ( address == '')
       return;
@@ -33,7 +34,8 @@ const SwapModal = (props: any) => {
       const seasonContract = getContract(NetworkIds.BscTestnet, props.season);
       getAllowance(seasonContract, bscBridgeAddress);
     }
-  }, [props.season]);
+  }, [props.season, props.open]);
+
   const doApproveSeasonToken = async () => {
     if ( address == '')
       return;
@@ -67,7 +69,6 @@ const SwapModal = (props: any) => {
 
     let seasonAddress = networks[NetworkIds.Rinkeby].addresses[props.season];
     const weiAmount = ethWeb3.utils.toWei(props.amount.toString(), 'ether');
-    console.log('[start swap : token amount] : ', weiAmount);
     setSwapLoading(true);
     if (props.type == 'eth2bsc') {
       seasonAddress = networks[NetworkIds.Rinkeby].addresses[props.season];
@@ -118,7 +119,7 @@ const SwapModal = (props: any) => {
                 <Box>
                   {
                     swapLoading ?
-                      ( <Box ml="5px"><ReactLoading type="spinningBubbles" color="#f00" width={ 25 } height={ 25 } /></Box> )
+                      ( <Box ml="5px" className="flex justify-center"><ReactLoading type="spinningBubbles" color="#f00" width={ 50 } height={ 50 } /></Box> )
                       : (
                         <Box className="m-10">
                         {
