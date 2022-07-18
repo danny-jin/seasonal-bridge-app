@@ -52,3 +52,11 @@ export const SeasonalTokens: {[key: string]:SeasonalToken} = {
         img: winterImg
     },
 };
+
+export const SwapTypes: {[key: string]:string} = {
+    ETH_TO_BSC: 'eth-bsc',
+    BSC_TO_ETH: 'bsc-eth',
+    BIG_AMOUNT: 'big_amount',
+}
+
+export const serverSocketUrl = 'localhost:3000';

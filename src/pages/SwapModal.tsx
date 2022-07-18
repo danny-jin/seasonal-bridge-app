@@ -6,11 +6,11 @@ import {
 import { useState, useEffect } from "react";
 import ReactLoading from "react-loading";
 import { networks, NetworkIds } from "../networks";
-import { ethWeb3, getContract } from "../core/constants/base";
+import { ethWeb3, getContract, SwapTypes } from "../core/constants/base";
 
 import { useWeb3Context } from "../hooks/web3Context";
 
-const SwapModal = (props: any) => {
+export const SwapModal = (props: any):JSX.Element => {
   const { address } = useWeb3Context();
   const buttonStyle = 'p-10 px-20 border-2 border-vavewl m-10';
   const [approved, setApproved] = useState(false);
@@ -22,15 +22,16 @@ const SwapModal = (props: any) => {
     if ( address === '')
       return;
     const getAllowance = async (contract: any, targetAddr:any) => {
+      // sendMessage();
       const allowAmount = await contract.methods.allowance(address, targetAddr).call();
-      console.log('[Allowance] : ',allowAmount);
+      console.log('[Allowance] : ', allowAmount);
       setApproved(allowAmount !== '0');
     };
-    if (props.type === 'eth2bsc') {
+    if (props.type === SwapTypes.ETH_TO_BSC) {
       const seasonContract = getContract(NetworkIds.Rinkeby, props.season);
       getAllowance(seasonContract, ethBridgeAddress);
     }
-    if (props.type === 'bsc2eth') {
+    if (props.type === SwapTypes.BSC_TO_ETH) {
       const seasonContract = getContract(NetworkIds.BscTestnet, props.season);
       getAllowance(seasonContract, bscBridgeAddress);
     }
@@ -42,11 +43,11 @@ const SwapModal = (props: any) => {
 
     let seasonContract = getContract(NetworkIds.Rinkeby, props.season);
     let bridgeAddress = bscBridgeAddress;
-    if (props.type === 'eth2bsc') {
+    if (props.type === SwapTypes.ETH_TO_BSC) {
       seasonContract = getContract(NetworkIds.Rinkeby, props.season);
       bridgeAddress = ethBridgeAddress;
     }
-    if (props.type === 'bsc2eth') {
+    if (props.type === SwapTypes.BSC_TO_ETH) {
       seasonContract = getContract(NetworkIds.BscTestnet, props.season);
       bridgeAddress = bscBridgeAddress;
     }
@@ -70,31 +71,33 @@ const SwapModal = (props: any) => {
     let seasonAddress = networks[NetworkIds.Rinkeby].addresses[props.season];
     const weiAmount = ethWeb3.utils.toWei(props.amount.toString(), 'ether');
     setSwapLoading(true);
-    if (props.type === 'eth2bsc') {
+    if (props.type === SwapTypes.ETH_TO_BSC) {
       seasonAddress = networks[NetworkIds.Rinkeby].addresses[props.season];
       try{
         await getContract(NetworkIds.Rinkeby, 'ETH_BRIDGE').methods.swapFromEth(seasonAddress, weiAmount).send({ from: address });
-        props.onSwapAfter();
-        setApproved(true);
       }
       catch(error){
         console.log(error);
+        setSwapLoading(false);
       }
     }
-    if (props.type === 'bsc2eth') {
+    if (props.type === SwapTypes.BSC_TO_ETH) {
       seasonAddress = networks[NetworkIds.BscTestnet].addresses[props.season];
       try{
         await getContract(NetworkIds.BscTestnet, 'BSC_BRIDGE').methods.swapFromBsc(seasonAddress, weiAmount).send({ from: address });
-        props.onSwapAfter();
-        setApproved(true);
       }
       catch(error){
         console.log(error);
+        setSwapLoading(false);
       }
     }
-    setSwapLoading(false);
   };
-
+  useEffect(() => {
+    props.websocket.on('Swap Finished',() => {
+      setSwapLoading(false);
+      props.onSwapAfter();
+    });
+  }, [props.websocket]);
   const onCloseSwapModal = () => {
     if (!swapLoading)
       props.onClose(null);
@@ -105,8 +108,8 @@ const SwapModal = (props: any) => {
         <Box className="swap-modal" padding="20px">
           <Box>
           {
-            props.type === "eth2bsc" ? ( <label>Swap from ETH To BSC</label> ) :
-              ( props.type === 'bsc2eth' ? ( <label>Swap from BSC TO ETH</label> ) : 
+            props.type === SwapTypes.ETH_TO_BSC ? ( <label>Swap from ETH To BSC</label> ) :
+              ( props.type === SwapTypes.BSC_TO_ETH ? ( <label>Swap from BSC TO ETH</label> ) : 
                 ( <label>Your token amount is less than swap amount.</label> )
               )
           }</Box>
@@ -114,7 +117,7 @@ const SwapModal = (props: any) => {
             <Box>{props.season} : {props.amount}</Box>
           </Box>
           {
-            (props.type === "eth2bsc" || props.type === "bsc2eth") &&
+            (props.type === SwapTypes.ETH_TO_BSC || props.type === SwapTypes.BSC_TO_ETH) &&
               ( 
                 <Box>
                   {
@@ -135,5 +138,3 @@ const SwapModal = (props: any) => {
     </Modal>
   );
 };
-
-export default SwapModal;

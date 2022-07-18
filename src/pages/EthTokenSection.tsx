@@ -6,11 +6,10 @@ import {
     FormControl,
     FormHelperText
   } from "@material-ui/core";
-// import React, { useState } from "react";
 
 import { SeasonalTokens } from "../core/constants/base";
 
-function EthTokenSection(props:any) {
+export const EthTokenSection = (props:any):JSX.Element => {
   // const [tokenAmount, setTokenAmount] = useState(0);
   return (
     <div className="flex justify-center items-center">
@@ -48,5 +47,3 @@ function EthTokenSection(props:any) {
     </div>
   );
 }
-  
-export default EthTokenSection;

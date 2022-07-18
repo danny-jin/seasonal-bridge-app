@@ -237,7 +237,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
     const connectedAddress = await connectedProvider.getSigner().getAddress();
     setAddress(connectedAddress);
     const validNetwork = _checkNetwork(chainId);
-    console.log(connectedProvider, connectedAddress);
+    console.log('[Metamask wallet is connected! provider, address] : ', connectedProvider, connectedAddress);
     if (!validNetwork) {
       const switched = await switchEthereumChain(defaultNetworkId, true);
       if (!switched) {
