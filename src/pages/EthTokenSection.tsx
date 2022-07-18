@@ -37,6 +37,7 @@ export const EthTokenSection = (props:any):JSX.Element => {
               return <MenuItem value={season} className="flex" key={index}>
                 <img src={SeasonalTokens[season].img} className="w-30 h-30" alt={season}/>
                 <label className="font-50 ml-20">{season}</label>
+                <label className="font-50 ml-20">{SeasonalTokens[season].ethAmount}</label>
               </MenuItem>;
             })
           }

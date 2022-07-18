@@ -3,4 +3,6 @@ export interface SeasonalToken {
     ethContract: any;
     bscContract: any;
     img: any;
+    ethAmount: string;
+    bscAmount: string;
 }

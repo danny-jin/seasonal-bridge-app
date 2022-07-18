@@ -1,19 +1,23 @@
 import { Box, Grid } from "@material-ui/core";
 import {useState, useEffect} from 'react';
+import { useDispatch } from "react-redux";
 import {io} from "socket.io-client";
+import Web3 from 'web3';
 
 import { useWeb3Context } from "./hooks/web3Context";
 import Layout from "./layout";
-import {SwapModal} from "./pages/SwapModal";
-import {EthTokenSection} from './pages/EthTokenSection';
-import BscTokenSection from './pages/BscTokenSection';
-import {ethWeb3, bscWeb3, SeasonalTokens, SwapTypes, serverSocketUrl} from './core/constants/base';
-import { NetworkIds } from "./networks";
-import Messages from "./components/Messages/Messages";
+import { SwapModal } from "./pages/SwapModal";
+import { EthTokenSection } from './pages/EthTokenSection';
+import { BscTokenSection } from './pages/BscTokenSection';
+import { ethWeb3, bscWeb3, SeasonalTokens, SwapTypes, serverSocketUrl} from './core/constants/base';
+import { NetworkIds } from './networks';
+import Messages from './components/Messages/Messages';
+import { info, error } from './core/store/slices/MessagesSlice';
 import './App.css';
 
 export const App = (): JSX.Element => {
 
+  const dispatch = useDispatch();
   const { connected, connect, address, switchEthereumChain } = useWeb3Context();
   const swapButtonsStyle = 'rounded-md bg-paarl hover:bg-corvette w-200 text-white hover:text-black p-10 font-semibold m-5 b-1';
   const [season,setSeason] = useState('SPRING');
@@ -36,17 +40,23 @@ export const App = (): JSX.Element => {
     setSwapBscAmount(event.target.value as number);
   };
   useEffect(() => {
-  }, []);
+    if (address === '') return;
+    Object.keys(SeasonalTokens).forEach((season: string) => {
+      getCurrentAmount(season).then();
+    });
+    
+  }, [address]);
 
-  useEffect(() => {
-    getCurrentAmount().then();
-  }, [season, connected]);
+  // useEffect(() => {
+  //   getCurrentAmount(season).then();
+  // }, [connected]);
 
-  const getCurrentAmount = async () => {
+  const getCurrentAmount = async (season: string) => {
     if (address !== '') {
       try {
         const ethAmount = await SeasonalTokens[season].ethContract.methods.balanceOf(address).call();
         const format = ethWeb3.utils.fromWei(ethAmount, 'ether');
+        SeasonalTokens[season].ethAmount = format;
         setEthAmount(format);
       } catch (error) {
         console.log(error);
@@ -55,6 +65,7 @@ export const App = (): JSX.Element => {
       try {
         const bscAmount = await SeasonalTokens[season].bscContract.methods.balanceOf(address).call();
         const format = bscWeb3.utils.fromWei(bscAmount, 'ether');
+        SeasonalTokens[season].bscAmount = format;
         setBscAmount(format);
       } catch (error) {
         console.log(error);
@@ -65,6 +76,7 @@ export const App = (): JSX.Element => {
       setBscAmount('0');
     }
   };
+
   const openSwapModal = async (type:string) => {
     if(!connected){
       try {
@@ -75,23 +87,35 @@ export const App = (): JSX.Element => {
         return;
       }
     }
-    setSwapModalOpen(true);
     if (type === SwapTypes.ETH_TO_BSC) {
-      await switchEthereumChain(NetworkIds.Rinkeby, true);
+      try {
+        await switchEthereumChain(NetworkIds.Rinkeby, true);
+      }
+      catch(errorObj: any) {
+        dispatch(error(errorObj.message));
+        return;
+      }
       setSwapAmount(swapEthAmount);
       if (parseFloat(swapEthAmount.toString()) > parseFloat(ethAmount)) {
-        setSwapType(SwapTypes.BIG_AMOUNT);
+        dispatch(error('Swap amount is bigger than current amount'));
         return;
       }
     }
     if (type === SwapTypes.BSC_TO_ETH) {
-      await switchEthereumChain(NetworkIds.BscTestnet, true);
+      try {
+        await switchEthereumChain(NetworkIds.BscTestnet, true);
+      }
+      catch(errorObj: any) {
+        dispatch(error(errorObj.message));
+        return;
+      }
       setSwapAmount(swapBscAmount);
       if (parseFloat(swapBscAmount.toString()) > parseFloat(bscAmount)) {
-        setSwapType(SwapTypes.BIG_AMOUNT);
+        dispatch(error('Swap amount is bigger than current amount'));
         return;
       }
     }
+    setSwapModalOpen(true);
     setSwapType(type);
   };
   const closeSwapModal = () => {

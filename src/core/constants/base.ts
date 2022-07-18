@@ -31,25 +31,33 @@ export const SeasonalTokens: {[key: string]:SeasonalToken} = {
         name: 'SPRING',
         ethContract: ethSeasonalContracts.SPRING,
         bscContract: bscSeasonalContracts.SPRING,
-        img: springImg
+        img: springImg,
+        ethAmount: '0',
+        bscAmount: '0'
     },
     SUMMER : {
         name: 'SUMMER',
         ethContract: ethSeasonalContracts.SUMMER,
         bscContract: bscSeasonalContracts.SUMMER,
-        img: summerImg
+        img: summerImg,
+        ethAmount: '0',
+        bscAmount: '0'
     },
     AUTUMN : {
         name: 'AUTUMN',
         ethContract: ethSeasonalContracts.AUTUMN,
         bscContract: bscSeasonalContracts.AUTUMN,
-        img: autumnImg
+        img: autumnImg,
+        ethAmount: '0',
+        bscAmount: '0'
     },
     WINTER : {
         name: 'WINTER',
         ethContract: ethSeasonalContracts.WINTER,
         bscContract: bscSeasonalContracts.WINTER,
-        img: winterImg
+        img: winterImg,
+        ethAmount: '0',
+        bscAmount: '0'
     },
 };
 

@@ -6,16 +6,10 @@ import {
   FormControl,
   FormHelperText
 } from "@material-ui/core";
-// import React, { useState, useEffect } from "react";
-// import { useSelector, useDispatch } from "react-redux";
-// import { changeSeasonal } from "../core/store/slice/bridgeSlice";
 
 import { SeasonalTokens } from "../core/constants/base";
 
-function BscTokenSection(props:any) {
-  // const dispatch = useDispatch();
-  // const [season, setSeason] = useState(props.season);
-  // const [tokenAmount, SetTokenAmount] = useState(0);
+export const BscTokenSection = (props: any):JSX.Element => {
 
   return (
     <div className="flex justify-center items-center">
@@ -43,6 +37,7 @@ function BscTokenSection(props:any) {
               return <MenuItem value={season} className="flex" key={index}>
                 <img src={SeasonalTokens[season].img} className="w-30 h-30" alt={season}/>
                 <label className="font-50 ml-20">{season}</label>
+                <label className="font-50 ml-20">{SeasonalTokens[season].bscAmount}</label>
               </MenuItem>;
             })
           }
@@ -53,5 +48,3 @@ function BscTokenSection(props:any) {
     </div>
   );
 }
-  
-export default BscTokenSection;

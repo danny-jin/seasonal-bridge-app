@@ -113,29 +113,24 @@ export const SwapModal = (props: any):JSX.Element => {
           <Box>
           {
             props.type === SwapTypes.ETH_TO_BSC ? ( <label>Swap from ETH To BSC</label> ) :
-              ( props.type === SwapTypes.BSC_TO_ETH ? ( <label>Swap from BSC TO ETH</label> ) : 
-                ( <label>Your token amount is less than swap amount.</label> )
-              )
+              ( <label>Swap from BSC TO ETH</label> )
           }</Box>
           <Box className="m-10">
             <Box>{props.season} : {props.amount}</Box>
           </Box>
           {
-            (props.type === SwapTypes.ETH_TO_BSC || props.type === SwapTypes.BSC_TO_ETH) &&
-              ( 
-                <Box>
-                  {
-                    swapLoading ?
-                      ( <Box ml="5px" className="flex justify-center"><ReactLoading type="spinningBubbles" color="#f00" width={ 50 } height={ 50 } /></Box> )
-                      : (
-                        <Box className="m-10">
-                        {
-                          approved === false ? ( <button className={buttonStyle} onClick={doApproveSeasonToken}>Approve</button> ) : ( <button className={buttonStyle} onClick={doSwapSeasonToken}>Swap</button> )
-                        }
-                        </Box> )
-                  }
-                </Box>
-              )
+            <Box>
+              {
+                swapLoading ?
+                  ( <Box ml="5px" className="flex justify-center"><ReactLoading type="spinningBubbles" color="#f00" width={ 50 } height={ 50 } /></Box> )
+                  : (
+                    <Box className="m-10">
+                    {
+                      approved === false ? ( <button className={buttonStyle} onClick={doApproveSeasonToken}>Approve</button> ) : ( <button className={buttonStyle} onClick={doSwapSeasonToken}>Swap</button> )
+                    }
+                    </Box> )
+              }
+            </Box>
           }
         </Box>
       </Fade>
