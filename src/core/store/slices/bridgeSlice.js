@@ -1,4 +1,3 @@
-import Web3 from 'web3';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {

@@ -7,7 +7,7 @@ import Web3Modal from "web3modal";
 
 import store from "../core/store/store";
 import { NetworkId, NetworkIds, enabledNetworkIds } from "../networks";
-import { error } from "../slices/MessagesSlice";
+import { error } from "../core/store/slices/MessagesSlice";
 import { chains } from "../providers";
 
 /**
@@ -237,7 +237,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
     const connectedAddress = await connectedProvider.getSigner().getAddress();
     setAddress(connectedAddress);
     const validNetwork = _checkNetwork(chainId);
-    console.log('[Metamask wallet is connected! provider, address] : ', connectedProvider, connectedAddress);
     if (!validNetwork) {
       const switched = await switchEthereumChain(defaultNetworkId, true);
       if (!switched) {

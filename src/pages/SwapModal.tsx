@@ -5,12 +5,15 @@ import {
 } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import ReactLoading from "react-loading";
+import { useDispatch } from "react-redux";
+
+import {info, error} from "../core/store/slices/MessagesSlice";
 import { networks, NetworkIds } from "../networks";
 import { ethWeb3, getContract, SwapTypes } from "../core/constants/base";
-
 import { useWeb3Context } from "../hooks/web3Context";
 
 export const SwapModal = (props: any):JSX.Element => {
+  const dispatch = useDispatch();
   const { address } = useWeb3Context();
   const buttonStyle = 'p-10 px-20 border-2 border-vavewl m-10';
   const [approved, setApproved] = useState(false);
@@ -22,7 +25,6 @@ export const SwapModal = (props: any):JSX.Element => {
     if ( address === '')
       return;
     const getAllowance = async (contract: any, targetAddr:any) => {
-      // sendMessage();
       const allowAmount = await contract.methods.allowance(address, targetAddr).call();
       console.log('[Allowance] : ', allowAmount);
       setApproved(allowAmount !== '0');
@@ -51,15 +53,16 @@ export const SwapModal = (props: any):JSX.Element => {
       seasonContract = getContract(NetworkIds.BscTestnet, props.season);
       bridgeAddress = bscBridgeAddress;
     }
-
     setSwapLoading(true);
     try{
       await seasonContract.methods.approve(bridgeAddress, '10000000000000000000000000000000000').send({ from: address });
       setApproved(true);
+      dispatch(info(`Approve token is finished.`));
     }
-    catch(error){
-      console.log(error);
+    catch(errorObj:any){
+      // console.log(errorObj);
       setApproved(false);
+      dispatch(error(errorObj.message));
     }
     setSwapLoading(false);
   };
@@ -67,7 +70,7 @@ export const SwapModal = (props: any):JSX.Element => {
   const doSwapSeasonToken = async () => {
     if ( address === '' || swapLoading === true )
       return;
-
+    
     let seasonAddress = networks[NetworkIds.Rinkeby].addresses[props.season];
     const weiAmount = ethWeb3.utils.toWei(props.amount.toString(), 'ether');
     setSwapLoading(true);
@@ -76,8 +79,8 @@ export const SwapModal = (props: any):JSX.Element => {
       try{
         await getContract(NetworkIds.Rinkeby, 'ETH_BRIDGE').methods.swapFromEth(seasonAddress, weiAmount).send({ from: address });
       }
-      catch(error){
-        console.log(error);
+      catch(errorObj:any){
+        dispatch(error(errorObj.message));
         setSwapLoading(false);
       }
     }
@@ -86,14 +89,15 @@ export const SwapModal = (props: any):JSX.Element => {
       try{
         await getContract(NetworkIds.BscTestnet, 'BSC_BRIDGE').methods.swapFromBsc(seasonAddress, weiAmount).send({ from: address });
       }
-      catch(error){
-        console.log(error);
+      catch(errorObj:any){
+        dispatch(error(errorObj.message));
         setSwapLoading(false);
       }
     }
   };
   useEffect(() => {
     props.websocket.on('Swap Finished',() => {
+      dispatch(info('Swap is finished!'));
       setSwapLoading(false);
       props.onSwapAfter();
     });

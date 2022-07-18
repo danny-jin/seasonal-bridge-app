@@ -59,7 +59,7 @@ const messagesSlice = createSlice({
     close(state, action: PayloadAction<Message>) {
       if(!document.body.hasAttribute("is-paralyzed") || window.confirm("Are you sure to execute this action?")) {
         state.items = state.items.map(message => {
-          return message.id == action.payload.id ? Object.assign({}, message, {open: false}) : message;
+          return message.id === action.payload.id ? Object.assign({}, message, {open: false}) : message;
         });
       }
     },
@@ -71,7 +71,7 @@ const messagesSlice = createSlice({
       let activeMessages = state.items.filter(message => {
         return Date.now() - message.created < MESSAGES_MAX_DISPLAY_DURATION;
       });
-      if (state.items.length != activeMessages.length) {
+      if (state.items.length !== activeMessages.length) {
         state.items = activeMessages;
       }
     },

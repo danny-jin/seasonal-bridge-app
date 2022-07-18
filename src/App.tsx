@@ -9,6 +9,7 @@ import {EthTokenSection} from './pages/EthTokenSection';
 import BscTokenSection from './pages/BscTokenSection';
 import {ethWeb3, bscWeb3, SeasonalTokens, SwapTypes, serverSocketUrl} from './core/constants/base';
 import { NetworkIds } from "./networks";
+import Messages from "./components/Messages/Messages";
 import './App.css';
 
 export const App = (): JSX.Element => {
@@ -23,7 +24,7 @@ export const App = (): JSX.Element => {
   const [swapAmount, setSwapAmount] = useState(0);
   const [swapEthAmount, setSwapEthAmount] = useState(100);
   const [swapBscAmount, setSwapBscAmount] = useState(100);
-  const [socket, setSocket] = useState(io(serverSocketUrl));
+  const socket = io(serverSocketUrl);
 
   const handleChange = (event: any) => {
     setSeason(event.target.value);
@@ -42,7 +43,7 @@ export const App = (): JSX.Element => {
   }, [season, connected]);
 
   const getCurrentAmount = async () => {
-    if (address != '') {
+    if (address !== '') {
       try {
         const ethAmount = await SeasonalTokens[season].ethContract.methods.balanceOf(address).call();
         const format = ethWeb3.utils.fromWei(ethAmount, 'ether');
@@ -116,6 +117,7 @@ export const App = (): JSX.Element => {
         </Grid>
       </Grid>
       <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={getCurrentAmount} websocket={socket}/>
+      <Messages />
     </Layout>
   );
 }
