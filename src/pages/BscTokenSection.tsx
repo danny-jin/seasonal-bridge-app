@@ -3,8 +3,7 @@ import {
   TextField,
   Select,
   MenuItem,
-  FormControl,
-  FormHelperText
+  FormControl
 } from "@material-ui/core";
 
 import { SeasonalTokens } from "../core/constants/base";
@@ -20,7 +19,7 @@ export const BscTokenSection = (props: any):JSX.Element => {
                 labelId="bsc-season-label"
                 value={props.season}
                 label="Season"
-                className="w-200 my-10"
+                className="my-10"
                 MenuProps={{
                   anchorOrigin: {
                     vertical: "bottom",
@@ -43,7 +42,6 @@ export const BscTokenSection = (props: any):JSX.Element => {
           }
         </Select>
         <TextField id="outlined-basic" label="Swap Token amount" variant="outlined" value={props.swapAmount} className="my-10" type="number" size="small" inputProps={{ min: 0 }} onChange={props.onSwapAmountChange}/>
-        <FormHelperText>Token Amount : {props.amount}</FormHelperText>
       </FormControl>
     </div>
   );

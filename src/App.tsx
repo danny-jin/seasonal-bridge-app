@@ -2,17 +2,16 @@ import { Box, Grid } from "@material-ui/core";
 import {useState, useEffect} from 'react';
 import { useDispatch } from "react-redux";
 import {io} from "socket.io-client";
-import Web3 from 'web3';
 
 import { useWeb3Context } from "./hooks/web3Context";
 import Layout from "./layout";
 import { SwapModal } from "./pages/SwapModal";
 import { EthTokenSection } from './pages/EthTokenSection';
 import { BscTokenSection } from './pages/BscTokenSection';
-import { ethWeb3, bscWeb3, SeasonalTokens, SwapTypes, serverSocketUrl} from './core/constants/base';
-import { NetworkIds } from './networks';
+import { ethWeb3, bscWeb3, SeasonalTokens, SwapTypes, serverSocketUrl, getContract} from './core/constants/base';
+import { networks, NetworkIds } from './networks';
 import Messages from './components/Messages/Messages';
-import { info, error } from './core/store/slices/MessagesSlice';
+import { error } from './core/store/slices/MessagesSlice';
 import './App.css';
 
 export const App = (): JSX.Element => {
@@ -28,6 +27,9 @@ export const App = (): JSX.Element => {
   const [swapAmount, setSwapAmount] = useState(0);
   const [swapEthAmount, setSwapEthAmount] = useState(100);
   const [swapBscAmount, setSwapBscAmount] = useState(100);
+  const [approved, setApproved] = useState(false);
+  const ethBridgeAddress = networks[NetworkIds.Rinkeby].addresses.ETH_BRIDGE;
+  const bscBridgeAddress = networks[NetworkIds.BscTestnet].addresses.BSC_BRIDGE;
   const socket = io(serverSocketUrl);
 
   const handleChange = (event: any) => {
@@ -44,12 +46,12 @@ export const App = (): JSX.Element => {
     Object.keys(SeasonalTokens).forEach((season: string) => {
       getCurrentAmount(season).then();
     });
-    
+    getCurrentAmount(season).then();
   }, [address]);
 
-  // useEffect(() => {
-  //   getCurrentAmount(season).then();
-  // }, [connected]);
+  useEffect(() => {
+    getCurrentAmount(season).then();
+  }, [season]);
 
   const getCurrentAmount = async (season: string) => {
     if (address !== '') {
@@ -87,6 +89,13 @@ export const App = (): JSX.Element => {
         return;
       }
     }
+
+    const getAllowance = async (contract: any, targetAddr:any) => {
+      const allowAmount = await contract.methods.allowance(address, targetAddr).call();
+      console.log('[Allowance] : ', allowAmount);
+      setApproved(allowAmount !== '0');
+    };
+
     if (type === SwapTypes.ETH_TO_BSC) {
       try {
         await switchEthereumChain(NetworkIds.Rinkeby, true);
@@ -96,6 +105,8 @@ export const App = (): JSX.Element => {
         return;
       }
       setSwapAmount(swapEthAmount);
+      const seasonContract = getContract(NetworkIds.Rinkeby, season);
+      getAllowance(seasonContract, ethBridgeAddress).then();
       if (parseFloat(swapEthAmount.toString()) > parseFloat(ethAmount)) {
         dispatch(error('Swap amount is bigger than current amount'));
         return;
@@ -110,6 +121,8 @@ export const App = (): JSX.Element => {
         return;
       }
       setSwapAmount(swapBscAmount);
+      const seasonContract = getContract(NetworkIds.BscTestnet, season);
+      getAllowance(seasonContract, bscBridgeAddress);
       if (parseFloat(swapBscAmount.toString()) > parseFloat(bscAmount)) {
         dispatch(error('Swap amount is bigger than current amount'));
         return;
@@ -127,7 +140,7 @@ export const App = (): JSX.Element => {
       <Grid container spacing={ 1 }>
         <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
           <Box className="text-center text-24 m-10">Ethereum</Box>
-          <EthTokenSection season={season} onChange={handleChange} amount={ethAmount} swapAmount={swapEthAmount}  onSwapAmountChange = {swapEthMountInput}/>
+          <EthTokenSection season={season} onChange={handleChange} swapAmount={swapEthAmount}  onSwapAmountChange = {swapEthMountInput}/>
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 2 } className="justify-box flex flex-col justify-around">
           <div>
@@ -137,10 +150,10 @@ export const App = (): JSX.Element => {
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
           <Box className="text-center text-24 m-10">Binance Smart Chain</Box>
-          <BscTokenSection season={season} onChange={handleChange} amount={bscAmount} swapAmount={swapBscAmount} onSwapAmountChange = {swapBscMountInput}/>
+          <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} onSwapAmountChange = {swapBscMountInput}/>
         </Grid>
       </Grid>
-      <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={getCurrentAmount} websocket={socket}/>
+      <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={getCurrentAmount} websocket={socket} approved={approved} setApproved={setApproved}/>
       <Messages />
     </Layout>
   );

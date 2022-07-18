@@ -6,38 +6,21 @@ import {
 import { useState, useEffect } from "react";
 import ReactLoading from "react-loading";
 import { useDispatch } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import {info, error} from "../core/store/slices/MessagesSlice";
 import { networks, NetworkIds } from "../networks";
-import { ethWeb3, getContract, SwapTypes } from "../core/constants/base";
+import { ethWeb3, getContract, SwapTypes, SeasonalTokens } from "../core/constants/base";
 import { useWeb3Context } from "../hooks/web3Context";
 
 export const SwapModal = (props: any):JSX.Element => {
   const dispatch = useDispatch();
   const { address } = useWeb3Context();
   const buttonStyle = 'p-10 px-20 border-2 border-vavewl m-10';
-  const [approved, setApproved] = useState(false);
   const [swapLoading, setSwapLoading] = useState(false);
   const ethBridgeAddress = networks[NetworkIds.Rinkeby].addresses.ETH_BRIDGE;
   const bscBridgeAddress = networks[NetworkIds.BscTestnet].addresses.BSC_BRIDGE;
-
-  useEffect(() => {
-    if ( address === '')
-      return;
-    const getAllowance = async (contract: any, targetAddr:any) => {
-      const allowAmount = await contract.methods.allowance(address, targetAddr).call();
-      console.log('[Allowance] : ', allowAmount);
-      setApproved(allowAmount !== '0');
-    };
-    if (props.type === SwapTypes.ETH_TO_BSC) {
-      const seasonContract = getContract(NetworkIds.Rinkeby, props.season);
-      getAllowance(seasonContract, ethBridgeAddress);
-    }
-    if (props.type === SwapTypes.BSC_TO_ETH) {
-      const seasonContract = getContract(NetworkIds.BscTestnet, props.season);
-      getAllowance(seasonContract, bscBridgeAddress);
-    }
-  }, [props.season, props.open]);
 
   const doApproveSeasonToken = async () => {
     if ( address === '')
@@ -56,12 +39,12 @@ export const SwapModal = (props: any):JSX.Element => {
     setSwapLoading(true);
     try{
       await seasonContract.methods.approve(bridgeAddress, '10000000000000000000000000000000000').send({ from: address });
-      setApproved(true);
+      props.setApproved(true);
       dispatch(info(`Approve token is finished.`));
     }
     catch(errorObj:any){
       // console.log(errorObj);
-      setApproved(false);
+      props.setApproved(false);
       dispatch(error(errorObj.message));
     }
     setSwapLoading(false);
@@ -110,23 +93,25 @@ export const SwapModal = (props: any):JSX.Element => {
     <Modal open={props.open} onClose={onCloseSwapModal}>
       <Fade in={props.open}>
         <Box className="swap-modal" padding="20px">
-          <Box>
+          <Box className="text-center">
           {
-            props.type === SwapTypes.ETH_TO_BSC ? ( <label>Swap from ETH To BSC</label> ) :
-              ( <label>Swap from BSC TO ETH</label> )
-          }</Box>
+            props.type === SwapTypes.ETH_TO_BSC ? ( <label className="text-30 font-bold">Swap from ETH To BSC</label> ) :
+              ( <label className="text-30 font-bold">Swap from BSC TO ETH</label> )
+          }
+          <button onClick={onCloseSwapModal} className="float-right"><FontAwesomeIcon icon={faTimes}/></button>
+          </Box>
           <Box className="m-10">
-            <Box>{props.season} : {props.amount}</Box>
+            <Box className="flex items-center justify-center">{props.amount} <img src={SeasonalTokens[props.season].img} className="w-30 mx-20"/></Box>
           </Box>
           {
-            <Box>
+            <Box className="flex justify-center">
               {
                 swapLoading ?
                   ( <Box ml="5px" className="flex justify-center"><ReactLoading type="spinningBubbles" color="#f00" width={ 50 } height={ 50 } /></Box> )
                   : (
-                    <Box className="m-10">
+                    <Box className="">
                     {
-                      approved === false ? ( <button className={buttonStyle} onClick={doApproveSeasonToken}>Approve</button> ) : ( <button className={buttonStyle} onClick={doSwapSeasonToken}>Swap</button> )
+                      props.approved === false ? ( <button className={buttonStyle} onClick={doApproveSeasonToken}>Approve</button> ) : ( <button className={buttonStyle} onClick={doSwapSeasonToken}>Swap</button> )
                     }
                     </Box> )
               }
