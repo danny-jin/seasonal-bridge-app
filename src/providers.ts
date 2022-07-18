@@ -1,7 +1,5 @@
 import { Provider, StaticJsonRpcProvider } from "@ethersproject/providers";
 import { NetworkIds } from "./networks";
-// import { NodeHelper } from "./helpers/NodeHelper";
-// import { MulticallProvider } from "./lib/MulticallProvider";
 
 interface ChainDetailsOpts {
   networkName: string,

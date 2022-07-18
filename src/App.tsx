@@ -1,19 +1,18 @@
 import { Box, Grid } from "@material-ui/core";
-import React, {useState, useEffect} from 'react';
-import Web3 from 'web3';
+import {useState, useEffect} from 'react';
 
 import { useWeb3Context } from "./hooks/web3Context";
 
 import Layout from "./layout";
-import SwapModal from "./pages/swapModal";
+import SwapModal from "./pages/SwapModal";
 import EthTokenSection from './pages/EthTokenSection';
 import BscTokenSection from './pages/BscTokenSection';
 import {ethWeb3, bscWeb3, SeasonalTokens} from './core/constants/base';
 import { NetworkIds } from "./networks";
 import './App.css';
 
-function App() {
-  const { connected, connect, address, switchEthereumChain, provider } = useWeb3Context();
+export const App = (): JSX.Element => {
+  const { connected, connect, address, switchEthereumChain } = useWeb3Context();
   const swapButtonsStyle = 'rounded-md bg-paarl hover:bg-corvette w-200 text-white hover:text-black p-10 font-semibold m-5 b-1';
   const [season,setSeason] = useState('SPRING');
   const [ethAmount, setEthAmount] = useState('0');
@@ -97,7 +96,7 @@ function App() {
       <Grid container spacing={ 1 }>
         <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
           <Box className="text-center text-24 m-10">Ethereum</Box>
-          <EthTokenSection season={season} onChange={handleChange} amount={ethAmount} swapamount={swapEthAmount}  onSwapAmountChange = {swapEthMountInput}/>
+          <EthTokenSection season={season} onChange={handleChange} amount={ethAmount} swapAmount={swapEthAmount}  onSwapAmountChange = {swapEthMountInput}/>
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 2 } className="justify-box flex flex-col justify-around">
           <div>
@@ -107,12 +106,10 @@ function App() {
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
           <Box className="text-center text-24 m-10">Binance Smart Chain</Box>
-          <BscTokenSection season={season} onChange={handleChange} amount={bscAmount} swapamount={swapBscAmount} onSwapAmountChange = {swapBscMountInput}/>
+          <BscTokenSection season={season} onChange={handleChange} amount={bscAmount} swapAmount={swapBscAmount} onSwapAmountChange = {swapBscMountInput}/>
         </Grid>
       </Grid>
       <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={getCurrentAmount}/>
     </Layout>
   );
 }
-
-export default App;

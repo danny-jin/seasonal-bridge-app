@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 import { Web3ContextProvider } from "./hooks/web3Context";
-
-import App from './App';
+import {App} from './App';
 import store from './core/store/store';
 import reportWebVitals from './reportWebVitals';
 

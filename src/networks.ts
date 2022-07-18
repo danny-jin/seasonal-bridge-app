@@ -1,8 +1,4 @@
-import React from "react";
-import springABI from './abi/springABI.json';
-import summerABI from './abi/autumnABI.json';
-import autumnABI from './abi/autumnABI.json';
-import winterABI from './abi/winterABI.json';
+import seasonalABI from './abi/seasonalABI.json';
 import ethBridgeABI from './abi/ethBridgeABI.json';
 import bscBridgeABI from './abi/bscBridgeABI.json';
 export type NetworkId = number;
@@ -13,10 +9,6 @@ export enum NetworkIds {
   Bsc = 56,
   BscTestnet = 97
 }
-
-// TODO once for a while update block times, use yesterday's value as today is not complete day
-// https://ftmscan.com/chart/blocktime
-// https://moonscan.io/chart/blocktime
 
 interface INetwork {
   name: string,
@@ -79,10 +71,10 @@ interface SeasonalABIS {
   [key: string]: any;
 };
 export const contractABIs: SeasonalABIS = {
-  SPRING: springABI,
-  SUMMER: summerABI,
-  AUTUMN: autumnABI,
-  WINTER: winterABI,
+  SPRING: seasonalABI,
+  SUMMER: seasonalABI,
+  AUTUMN: seasonalABI,
+  WINTER: seasonalABI,
   ETH_BRIDGE: ethBridgeABI,
   BSC_BRIDGE: bscBridgeABI
 }

@@ -6,7 +6,7 @@ import React, { useState, ReactElement, useContext, useMemo, useCallback } from 
 import Web3Modal from "web3modal";
 
 import store from "../core/store/store";
-import { NetworkId, NetworkIds, networks, enabledNetworkIds } from "../networks";
+import { NetworkId, NetworkIds, enabledNetworkIds } from "../networks";
 import { error } from "../slices/MessagesSlice";
 import { chains } from "../providers";
 
@@ -223,8 +223,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
       return true;
     }
   };
-
-  // connect - only runs for WalletProviders
   const connect = useCallback(async () => {
     // handling Ledger Live;
     let rawProvider;
@@ -233,8 +231,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
     } else {
       rawProvider = await web3Modal.connect();
     }
-    // new _initListeners implementation matches Web3Modal Docs
-    // ... see here: https://github.com/Web3Modal/web3modal/blob/2ff929d0e99df5edf6bb9e88cff338ba6d8a3991/example/src/App.tsx#L185
     _initListeners(rawProvider);
     const connectedProvider = new Web3Provider(rawProvider, "any");
     const chainId = await connectedProvider.getNetwork().then(network => network.chainId);
@@ -284,7 +280,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
       web3Modal,
     }),
     [connect, disconnect, hasCachedProvider, provider, connected, address, chainId, web3Modal],
-  );
+  )
 
   const getCurrentTokenAmounts = () => {
 
