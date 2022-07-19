@@ -73,16 +73,8 @@ export const App = (): JSX.Element => {
 
   const openSwapModal = async (type:string) => {
     if(!connected){
-      setLoadModalOpen(true);
-      try {
-        await connect();
-      }
-      catch(error){
-        console.log(error);
-        setLoadModalOpen(false);
-        return;
-      }
-      setLoadModalOpen(false);
+      dispatch(error('Please connect to your wallet!'));
+      return;
     }
 
     const getAllowance = async (contract: any, targetAddr:any) => {

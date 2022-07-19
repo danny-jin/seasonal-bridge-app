@@ -76,19 +76,16 @@ export const SwapModal = (props: any): JSX.Element => {
     if (!swapLoading)
       props.onClose(null);
   }
-
-  useEffect(() => {
-    props.websocket.on('Swap Finished', () => {
+  
+  props.websocket.on('Swap Finished', () => {
+    if (swapLoading) {
+      console.log('finished');
       dispatch(info('Swap is finished!'));
       setSwapLoading(false);
       props.onSwapAfter();
       onCloseSwapModal();
-    });
-    props.websocket.on('error', (errorMsg: any) => {
-      console.log(errorMsg);
-      setSwapLoading(false);
-    });
-  }, [props.websocket]);
+    }
+  });
 
   return (
     <Modal open={ props.open } onClose={ onCloseSwapModal }>
