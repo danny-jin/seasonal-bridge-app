@@ -21,6 +21,4 @@ export const bridgeSlice = createSlice({
     }
   }
 });
-
-export const { setWalletAddress, getSeasonalTokens, changeSeasonal } = bridgeSlice.actions;
 export default bridgeSlice.reducer;

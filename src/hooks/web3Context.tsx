@@ -254,7 +254,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
     setConnected(true);
 
     return connectedProvider;
-  }, [provider, web3Modal, connected]);
+  }, [_initListeners, _checkNetwork, web3Modal, switchEthereumChain, defaultNetworkId]);
   
   const disconnect = useCallback(async () => {
     console.log("disconnecting");
@@ -280,10 +280,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
     }),
     [connect, disconnect, hasCachedProvider, provider, connected, address, chainId, web3Modal],
   )
-
-  const getCurrentTokenAmounts = () => {
-
-  };
 
   return <Web3Context.Provider value={{onChainProvider}}>{children}</Web3Context.Provider>;
 };

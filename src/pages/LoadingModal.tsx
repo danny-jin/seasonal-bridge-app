@@ -1,9 +1,6 @@
-import {
-    Box,
-    Modal,
-    Fade
-  } from "@material-ui/core";
+import { Box, Modal, Fade } from "@material-ui/core";
 import ReactLoading from "react-loading";
+
 export const LoadingModal = (props: any):JSX.Element => {
 
     return (
@@ -15,4 +12,5 @@ export const LoadingModal = (props: any):JSX.Element => {
         </Fade>
       </Modal>
     );
+
 };

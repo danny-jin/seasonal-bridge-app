@@ -1,4 +1,5 @@
 import Web3 from 'web3';
+
 import { SeasonalToken } from '../interfaces/base';
 import { contractABIs, networks, NetworkIds} from '../../networks';
 import { chains } from '../../providers';
@@ -8,18 +9,20 @@ import summerImg from '../../assets/images/tokens/summer.png';
 import autumnImg from '../../assets/images/tokens/autumn.png';
 import winterImg from '../../assets/images/tokens/winter.png';
 
+const bscSeasonalContracts = Object.keys(networks[NetworkIds.BscTestnet].addresses).reduce((prev:any, season: string)=>{
+    prev[season] = new bscWeb3.eth.Contract(contractABIs[season], networks[NetworkIds.BscTestnet].addresses[season]);
+    return prev;
+}, {});
 
-export const ethWeb3 = new Web3(chains[NetworkIds.Rinkeby].rpcUrls[0]);
 const ethSeasonalContracts = Object.keys(networks[NetworkIds.Rinkeby].addresses).reduce((prev:any, season: string)=>{
     prev[season] = new ethWeb3.eth.Contract(contractABIs[season], networks[NetworkIds.Rinkeby].addresses[season]);
     return prev;
 }, {});
 
+
+export const ethWeb3 = new Web3(chains[NetworkIds.Rinkeby].rpcUrls[0]);
+
 export const bscWeb3 = new Web3(chains[NetworkIds.BscTestnet].rpcUrls[0]);
-const bscSeasonalContracts = Object.keys(networks[NetworkIds.BscTestnet].addresses).reduce((prev:any, season: string)=>{
-    prev[season] = new bscWeb3.eth.Contract(contractABIs[season], networks[NetworkIds.BscTestnet].addresses[season]);
-    return prev;
-}, {});
 
 export const getContract = (networkId:number, season: string) => {
     const connectWeb3 = new Web3(Web3.givenProvider);

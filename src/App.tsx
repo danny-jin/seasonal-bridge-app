@@ -1,19 +1,19 @@
 import { Box, Grid } from '@material-ui/core';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
 import useForceUpdate from 'use-force-update';
 
-import { useWeb3Context } from './hooks/web3Context';
-import Layout from './layout';
+import { Layout } from './layout';
 import { SwapModal } from './pages/SwapModal';
 import { LoadingModal } from './pages/LoadingModal';
 import { EthTokenSection } from './pages/EthTokenSection';
 import { BscTokenSection } from './pages/BscTokenSection';
-import { ethWeb3, bscWeb3, SeasonalTokens, SwapTypes, serverSocketUrl, getContract} from './core/constants/base';
-import { networks, NetworkIds } from './networks';
+import { useWeb3Context } from './hooks/web3Context';
+import { NetworkIds, networks } from './networks';
 import Messages from './components/Messages/Messages';
 import { error } from './core/store/slices/MessagesSlice';
+import { bscWeb3, ethWeb3, getContract, SeasonalTokens, serverSocketUrl, SwapTypes } from './core/constants/base';
 import './App.css';
 
 export const App = (): JSX.Element => {
@@ -47,16 +47,14 @@ export const App = (): JSX.Element => {
     if (address !== '') {
       try {
         const ethAmount = await SeasonalTokens[season].ethContract.methods.balanceOf(address).call();
-        const format = ethWeb3.utils.fromWei(ethAmount, 'ether');
-        SeasonalTokens[season].ethAmount = format;
+        SeasonalTokens[season].ethAmount = ethWeb3.utils.fromWei(ethAmount, 'ether');
       } catch (error) {
         console.log(error);
       }
 
       try {
         const bscAmount = await SeasonalTokens[season].bscContract.methods.balanceOf(address).call();
-        const format = bscWeb3.utils.fromWei(bscAmount, 'ether');
-        SeasonalTokens[season].bscAmount = format;
+        SeasonalTokens[season].bscAmount = bscWeb3.utils.fromWei(bscAmount, 'ether');
       } catch (error) {
         console.log(error);
       }
@@ -114,7 +112,7 @@ export const App = (): JSX.Element => {
         return;
       setSwapAmount(swapBscAmount);
       const seasonContract = getContract(NetworkIds.BscTestnet, season);
-      getAllowance(seasonContract, bscBridgeAddress);
+      await getAllowance(seasonContract, bscBridgeAddress);
       if (parseFloat(swapBscAmount.toString()) > parseFloat(SeasonalTokens[season].bscAmount)) {
         dispatch(error('Swap amount is bigger than current amount'));
         return;
@@ -133,13 +131,9 @@ export const App = (): JSX.Element => {
   useEffect(() => {
     if (address === '') return;
     Object.keys(SeasonalTokens).forEach((season: string) => {
-      getCurrentAmount(season);
+      getCurrentAmount(season).then();
     });
-  }, [address]);
-
-  // useEffect(() => {
-  //   getCurrentAmount(season);
-  // }, [season]);
+  }, [address, getCurrentAmount]);
 
   return (
     <Layout>

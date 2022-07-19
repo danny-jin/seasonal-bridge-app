@@ -1,6 +1,6 @@
 import { useWeb3Context } from "../../hooks/web3Context";
 
-const ConnectWalletButton = () => {  
+export const ConnectWalletButton = () => {
   const { connect, disconnect, address } = useWeb3Context();
   return (
     <div>
@@ -18,5 +18,3 @@ const ConnectWalletButton = () => {
     </div>
   );
 }
-
-export default ConnectWalletButton;

@@ -9,7 +9,7 @@ import {
 import { SeasonalTokens } from "../core/constants/base";
 
 export const EthTokenSection = (props:any):JSX.Element => {
-  // const [tokenAmount, setTokenAmount] = useState(0);
+
   return (
     <div className="flex justify-center items-center">
       <FormControl variant="standard">
