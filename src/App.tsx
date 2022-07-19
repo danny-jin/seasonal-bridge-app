@@ -1,11 +1,12 @@
-import { Box, Grid } from "@material-ui/core";
+import { Box, Grid } from '@material-ui/core';
 import {useState, useEffect, useCallback} from 'react';
-import { useDispatch } from "react-redux";
-import {io} from "socket.io-client";
+import { useDispatch } from 'react-redux';
+import {io} from 'socket.io-client';
 
-import { useWeb3Context } from "./hooks/web3Context";
-import Layout from "./layout";
-import { SwapModal } from "./pages/SwapModal";
+import { useWeb3Context } from './hooks/web3Context';
+import Layout from './layout';
+import { SwapModal } from './pages/SwapModal';
+import { LoadingModal } from './pages/LoadingModal';
 import { EthTokenSection } from './pages/EthTokenSection';
 import { BscTokenSection } from './pages/BscTokenSection';
 import { ethWeb3, bscWeb3, SeasonalTokens, SwapTypes, serverSocketUrl, getContract} from './core/constants/base';
@@ -22,6 +23,7 @@ export const App = (): JSX.Element => {
   const [season,setSeason] = useState('SPRING');
   const [swapType, setSwapType] = useState('');
   const [swapModalOpen, setSwapModalOpen] = useState(false);
+  const [loadModalOpen, setLoadModalOpen] = useState(false);
   const [swapAmount, setSwapAmount] = useState(0);
   const [swapEthAmount, setSwapEthAmount] = useState(100);
   const [swapBscAmount, setSwapBscAmount] = useState(100);
@@ -65,13 +67,16 @@ export const App = (): JSX.Element => {
 
   const openSwapModal = async (type:string) => {
     if(!connected){
+      setLoadModalOpen(true);
       try {
         await connect();
       }
       catch(error){
         console.log(error);
+        setLoadModalOpen(false);
         return;
       }
+      setLoadModalOpen(false);
     }
 
     const getAllowance = async (contract: any, targetAddr:any) => {
@@ -80,7 +85,9 @@ export const App = (): JSX.Element => {
     };
 
     if (type === SwapTypes.ETH_TO_BSC) {
+      setLoadModalOpen(true);
       let changedNetwork = await switchEthereumChain(NetworkIds.Rinkeby, true);
+      setLoadModalOpen(false);
       if (!changedNetwork)
         return;
       setSwapAmount(swapEthAmount);
@@ -97,7 +104,9 @@ export const App = (): JSX.Element => {
     }
 
     if (type === SwapTypes.BSC_TO_ETH) {
+      setLoadModalOpen(true);
       let changedNetwork = await switchEthereumChain(NetworkIds.BscTestnet, true);
+      setLoadModalOpen(false);
       if (!changedNetwork)
         return;
       setSwapAmount(swapBscAmount);
@@ -150,8 +159,9 @@ export const App = (): JSX.Element => {
           <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} onSwapAmountChange = {swapBscMountInput}/>
         </Grid>
       </Grid>
-      <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={getCurrentAmount} websocket={socket} approved={approved} setApproved={setApproved}/>
+      <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={() => getCurrentAmount(season)} websocket={socket} approved={approved} setApproved={setApproved}/>
       <Messages />
+      <LoadingModal open={ loadModalOpen }/>
     </Layout>
   );
 }

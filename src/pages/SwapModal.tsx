@@ -107,7 +107,7 @@ export const SwapModal = (props: any):JSX.Element => {
             <Box className="flex justify-center">
               {
                 swapLoading ?
-                  ( <Box ml="5px" className="flex justify-center"><ReactLoading type="spinningBubbles" color="#f00" width={ 50 } height={ 50 } /></Box> )
+                  ( <Box ml="5px" className="flex justify-center"><ReactLoading type="spinningBubbles" color="#FACB99" width={ 50 } height={ 50 } /></Box> )
                   : (
                     <Box className="">
                     {
