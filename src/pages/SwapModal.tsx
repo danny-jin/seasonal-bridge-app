@@ -6,7 +6,7 @@ import ReactLoading from "react-loading";
 import { useDispatch } from "react-redux";
 
 import { info, error } from "../core/store/slices/MessagesSlice";
-import { networks, NetworkIds } from "../networks";
+import { networks, FromNetwork, ToNetwork } from "../networks";
 import { useWeb3Context } from "../hooks/web3Context";
 import { ethWeb3, getContract, SwapTypes, SeasonalTokens } from "../core/constants/base";
 
@@ -15,21 +15,21 @@ export const SwapModal = (props: any): JSX.Element => {
   const {address} = useWeb3Context();
   const buttonStyle = 'p-10 px-20 border-2 border-vavewl m-10';
   const [swapLoading, setSwapLoading] = useState(false);
-  const ethBridgeAddress = networks[NetworkIds.Rinkeby].addresses.ETH_BRIDGE;
-  const bscBridgeAddress = networks[NetworkIds.BscTestnet].addresses.BSC_BRIDGE;
+  const ethBridgeAddress = networks[FromNetwork].addresses.ETH_BRIDGE;
+  const bscBridgeAddress = networks[ToNetwork].addresses.BSC_BRIDGE;
 
   const doApproveSeasonToken = async () => {
     if (address === '')
       return;
 
-    let seasonContract = getContract(NetworkIds.Rinkeby, props.season);
+    let seasonContract = getContract(FromNetwork, props.season);
     let bridgeAddress = bscBridgeAddress;
     if (props.type === SwapTypes.ETH_TO_BSC) {
-      seasonContract = getContract(NetworkIds.Rinkeby, props.season);
+      seasonContract = getContract(FromNetwork, props.season);
       bridgeAddress = ethBridgeAddress;
     }
     if (props.type === SwapTypes.BSC_TO_ETH) {
-      seasonContract = getContract(NetworkIds.BscTestnet, props.season);
+      seasonContract = getContract(ToNetwork, props.season);
       bridgeAddress = bscBridgeAddress;
     }
     setSwapLoading(true);
@@ -49,22 +49,22 @@ export const SwapModal = (props: any): JSX.Element => {
     if (address === '' || swapLoading)
       return;
 
-    let seasonAddress = networks[NetworkIds.Rinkeby].addresses[props.season];
+    let seasonAddress = networks[FromNetwork].addresses[props.season];
     const weiAmount = ethWeb3.utils.toWei(props.amount.toString(), 'ether');
     setSwapLoading(true);
     if (props.type === SwapTypes.ETH_TO_BSC) {
-      seasonAddress = networks[NetworkIds.Rinkeby].addresses[props.season];
+      seasonAddress = networks[FromNetwork].addresses[props.season];
       try {
-        await getContract(NetworkIds.Rinkeby, 'ETH_BRIDGE').methods.swapFromEth(seasonAddress, weiAmount).send({from: address});
+        await getContract(FromNetwork, 'ETH_BRIDGE').methods.swapFromEth(seasonAddress, weiAmount).send({from: address});
       } catch (errorObj: any) {
         dispatch(error(errorObj.message));
         setSwapLoading(false);
       }
     }
     if (props.type === SwapTypes.BSC_TO_ETH) {
-      seasonAddress = networks[NetworkIds.BscTestnet].addresses[props.season];
+      seasonAddress = networks[ToNetwork].addresses[props.season];
       try {
-        await getContract(NetworkIds.BscTestnet, 'BSC_BRIDGE').methods.swapFromBsc(seasonAddress, weiAmount).send({from: address});
+        await getContract(ToNetwork, 'BSC_BRIDGE').methods.swapFromBsc(seasonAddress, weiAmount).send({from: address});
       } catch (errorObj: any) {
         dispatch(error(errorObj.message));
         setSwapLoading(false);
@@ -79,7 +79,6 @@ export const SwapModal = (props: any): JSX.Element => {
   
   props.websocket.on('Swap Finished', () => {
     if (swapLoading) {
-      console.log('finished');
       dispatch(info('Swap is finished!'));
       setSwapLoading(false);
       props.onSwapAfter();

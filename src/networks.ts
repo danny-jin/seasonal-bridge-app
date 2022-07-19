@@ -10,6 +10,9 @@ export enum NetworkIds {
   BscTestnet = 97
 }
 
+export const FromNetwork = NetworkIds.Ethereum;
+export const ToNetwork = NetworkIds.Bsc;
+
 interface INetwork {
   name: string,
   isEnabled: boolean,
@@ -44,25 +47,25 @@ export const networks: INetworks = {
     }
   },
   [NetworkIds.Ethereum]: {
-    name: 'BSC Testnet',
+    name: 'Ethereum',
     isEnabled: true,
     addresses: {
-      SPRING: '',
-      SUMMER: '',
-      AUTUMN: '',
-      WINTER: '',
-      ETH_BRIDGE: ''
+      SPRING: '0xf04aF3f4E4929F7CD25A751E6149A3318373d4FE',
+      SUMMER: '0x4D4f3715050571A447FfFa2Cd4Cf091C7014CA5c',
+      AUTUMN: '0x4c3bAe16c79c30eEB1004Fb03C878d89695e3a99',
+      WINTER: '0xCcbA0b2bc4BAbe4cbFb6bD2f1Edc2A9e86b7845f',
+      ETH_BRIDGE: '0x9d593299cf32410045D114C3C18a68ACEECDD3f7'
     }
   },
   [NetworkIds.Bsc]: {
-    name: 'BSC Testnet',
+    name: 'BSC',
     isEnabled: true,
     addresses: {
-      SPRING: '',
-      SUMMER: '',
-      AUTUMN: '',
-      WINTER: '',
-      BSC_BRIDGE: ''
+      SPRING: '0x8d725B8848cf9C971Fa8991cbDeE2e1a35ac9DeC',
+      SUMMER: '0x21B174B45f930C1b5E34b5066C95d4dBe23Ef421',
+      AUTUMN: '0xec964DeE5172d86A0188B992B1F5603DE947f41b',
+      WINTER: '0x8080821eec2B90Bc18dd7Fd9D5Fc7c3F820EB7e9',
+      BSC_BRIDGE: '0xA2E1136d323896eD56F15ff85b9C73C6DdC98a96'
     }
   }
 };

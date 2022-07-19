@@ -66,7 +66,6 @@ export const chains: AllChainDetails = {
     symbol: 'ETH',
     decimals: 18,
     blockExplorerUrls: ['https://etherscan.io/'],
-    multicallAddress: '0xf0a4c5b65317ce6fed4e262e514dec83837d146a',
   }),
   [NetworkIds.Rinkeby]: new ChainDetails({
     networkName: 'Rinkeby',
@@ -79,7 +78,7 @@ export const chains: AllChainDetails = {
     blockExplorerUrls: ['https://rinkeby.etherscan.io/'],
   }),
   [NetworkIds.Bsc]: new ChainDetails({
-    networkName: 'Rinkeby',
+    networkName: 'Bsc',
     rpcUrls: [
       'https://thrumming-weathered-frost.bsc-testnet.discover.quiknode.pro/31130ceb74ac83c82dbb6e19416e11ca66633c3a/',
     ],
@@ -88,7 +87,7 @@ export const chains: AllChainDetails = {
     blockExplorerUrls: [],
   }),
   [NetworkIds.BscTestnet]: new ChainDetails({
-    networkName: 'Rinkeby',
+    networkName: 'BscTestnet',
     rpcUrls: [
       'https://damp-lively-sky.bsc-testnet.discover.quiknode.pro/0c081c2226011a3054b9b86b260156dd64a4476a/',
     ],
