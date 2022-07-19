@@ -10,7 +10,7 @@ import { LoadingModal } from './pages/LoadingModal';
 import { EthTokenSection } from './pages/EthTokenSection';
 import { BscTokenSection } from './pages/BscTokenSection';
 import { useWeb3Context } from './hooks/web3Context';
-import { NetworkIds, networks } from './networks';
+import { networks, FromNetwork, ToNetwork } from './networks';
 import Messages from './components/Messages/Messages';
 import { error } from './core/store/slices/MessagesSlice';
 import { bscWeb3, ethWeb3, getContract, SeasonalTokens, serverSocketUrl, SwapTypes } from './core/constants/base';
@@ -34,8 +34,8 @@ export const App = (): JSX.Element => {
   const [swapEthAmount, setSwapEthAmount] = useState(100);
   const [swapBscAmount, setSwapBscAmount] = useState(100);
   const [approved, setApproved] = useState(false);
-  const ethBridgeAddress = networks[NetworkIds.Rinkeby].addresses.ETH_BRIDGE;
-  const bscBridgeAddress = networks[NetworkIds.BscTestnet].addresses.BSC_BRIDGE;
+  const ethBridgeAddress = networks[FromNetwork].addresses.ETH_BRIDGE;
+  const bscBridgeAddress = networks[ToNetwork].addresses.BSC_BRIDGE;
   const socket = io(serverSocketUrl);
 
   const handleChange = (event: any) => {
@@ -84,12 +84,12 @@ export const App = (): JSX.Element => {
 
     if (type === SwapTypes.ETH_TO_BSC) {
       setLoadModalOpen(true);
-      let changedNetwork = await switchEthereumChain(NetworkIds.Rinkeby, true);
+      let changedNetwork = await switchEthereumChain(FromNetwork, true);
       setLoadModalOpen(false);
       if (!changedNetwork)
         return;
       setSwapAmount(swapEthAmount);
-      const seasonContract = getContract(NetworkIds.Rinkeby, season);
+      const seasonContract = getContract(FromNetwork, season);
       getAllowance(seasonContract, ethBridgeAddress).then();
       if (parseFloat(swapEthAmount.toString()) > parseFloat(seasonTokenAmounts[season].ethAmount)) {
         dispatch(error('Swap amount is bigger than current amount'));
@@ -103,12 +103,12 @@ export const App = (): JSX.Element => {
 
     if (type === SwapTypes.BSC_TO_ETH) {
       setLoadModalOpen(true);
-      let changedNetwork = await switchEthereumChain(NetworkIds.BscTestnet, true);
+      let changedNetwork = await switchEthereumChain(ToNetwork, true);
       setLoadModalOpen(false);
       if (!changedNetwork)
         return;
       setSwapAmount(swapBscAmount);
-      const seasonContract = getContract(NetworkIds.BscTestnet, season);
+      const seasonContract = getContract(ToNetwork, season);
       await getAllowance(seasonContract, bscBridgeAddress);
       if (parseFloat(swapBscAmount.toString()) > parseFloat(seasonTokenAmounts[season].bscAmount)) {
         dispatch(error('Swap amount is bigger than current amount'));

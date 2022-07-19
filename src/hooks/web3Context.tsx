@@ -6,7 +6,7 @@ import React, { useState, ReactElement, useContext, useMemo, useCallback } from 
 import Web3Modal from "web3modal";
 
 import store from "../core/store/store";
-import { NetworkId, NetworkIds, enabledNetworkIds } from "../networks";
+import { NetworkId, NetworkIds, enabledNetworkIds, FromNetwork } from "../networks";
 import { error } from "../core/store/slices/MessagesSlice";
 import { chains } from "../providers";
 
@@ -79,7 +79,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
 
   const [connected, setConnected] = useState(false);
 
-  let defaultNetworkId = getSavedNetworkId() || NetworkIds.Rinkeby;
+  let defaultNetworkId = getSavedNetworkId() || FromNetwork;
   const [chainId, setChainId] = useState(defaultNetworkId);
   const [address, setAddress] = useState("");
   const [provider, setProvider] = useState<JsonRpcProvider | null>(null);
