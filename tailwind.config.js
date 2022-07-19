@@ -20,6 +20,7 @@ module.exports = {
       }, 
       fontSize: {
         ...range(minFontSize, maxFontSize).reduce((merged, f) => ({ ...merged, [f]: `${f}px`}), {}),
+        ...range(1, 10).reduce((merged, f) => ({ ...merged, [`${f}em`]: `${f}em`}), {}),
       },
       fontWeight: {
         thin: '100',
@@ -46,6 +47,7 @@ module.exports = {
         '2xl': '1rem',
         '3xl': '1.5rem',
         full: '9999px',
+        ...range(1, 10).reduce((merged, f) => ({ ...merged, [f]: `${f}px`}), {}),
       },
       borderWidth: {
         DEFAULT: '1px',
@@ -55,12 +57,22 @@ module.exports = {
         4: '4px',
         8: '8px',
       },
+      padding: {
+
+      },
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
         paarl: '#9C622E',
         corvette: '#FACB99',
         vavewl: '#9DCCEA',
+        artySkyBlue: '#00C3FF',
+        squash: '#F5A61A',
+
+      },
+      boxShadow: {
+        skyblue: '0px 0px 24px rgb(27, 171, 251, 0.56)',
+        squash: '0px 0px 24px rgb(27, 171, 251, 0.56)',
       },
       margin: (theme, { negative }) => ({
         auto: 'auto',
