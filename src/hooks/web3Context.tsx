@@ -27,7 +27,7 @@ function getURI(networkId: NetworkId): string {
 type onChainProvider = {
   connect: () => void;
   disconnect: () => void;
-  switchEthereumChain: (chainId:number, force:boolean) => void;
+  switchEthereumChain: (chainId:number, force:boolean) => Promise<boolean>;
   provider: JsonRpcProvider | null;
   address: string;
   connected: Boolean;
@@ -210,7 +210,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({child
             return false;
           }
         } else {
-          console.error(e);
+          store.dispatch(error(e.message));
           return false;
         }
       }

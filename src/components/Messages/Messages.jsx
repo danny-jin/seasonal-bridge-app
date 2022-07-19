@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactLoading from "react-loading";
 
-import "./ConsoleInterceptor.js";
 import { close, handle_obsolete } from "../../core/store/slices/MessagesSlice";
 import store from "../../core/store/store";
 import { trim } from "../../helpers";

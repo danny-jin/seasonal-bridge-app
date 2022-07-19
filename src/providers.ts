@@ -90,7 +90,7 @@ export const chains: AllChainDetails = {
   [NetworkIds.BscTestnet]: new ChainDetails({
     networkName: 'Rinkeby',
     rpcUrls: [
-      'https://thrumming-weathered-frost.bsc-testnet.discover.quiknode.pro/31130ceb74ac83c82dbb6e19416e11ca66633c3a/',
+      'https://damp-lively-sky.bsc-testnet.discover.quiknode.pro/0c081c2226011a3054b9b86b260156dd64a4476a/',
     ],
     symbol: 'TBNB',
     decimals: 18,

@@ -1,5 +1,5 @@
 import { Box, Grid } from "@material-ui/core";
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useCallback} from 'react';
 import { useDispatch } from "react-redux";
 import {io} from "socket.io-client";
 
@@ -20,8 +20,6 @@ export const App = (): JSX.Element => {
   const { connected, connect, address, switchEthereumChain } = useWeb3Context();
   const swapButtonsStyle = 'rounded-md bg-paarl hover:bg-corvette w-200 text-white hover:text-black p-10 font-semibold m-5 b-1';
   const [season,setSeason] = useState('SPRING');
-  const [ethAmount, setEthAmount] = useState('0');
-  const [bscAmount, setBscAmount] = useState('0');
   const [swapType, setSwapType] = useState('');
   const [swapModalOpen, setSwapModalOpen] = useState(false);
   const [swapAmount, setSwapAmount] = useState(0);
@@ -41,25 +39,12 @@ export const App = (): JSX.Element => {
   const swapBscMountInput = (event: any) => {
     setSwapBscAmount(event.target.value as number);
   };
-  useEffect(() => {
-    if (address === '') return;
-    Object.keys(SeasonalTokens).forEach((season: string) => {
-      getCurrentAmount(season).then();
-    });
-    getCurrentAmount(season).then();
-  }, [address]);
-
-  useEffect(() => {
-    getCurrentAmount(season).then();
-  }, [season]);
-
   const getCurrentAmount = async (season: string) => {
     if (address !== '') {
       try {
         const ethAmount = await SeasonalTokens[season].ethContract.methods.balanceOf(address).call();
         const format = ethWeb3.utils.fromWei(ethAmount, 'ether');
         SeasonalTokens[season].ethAmount = format;
-        setEthAmount(format);
       } catch (error) {
         console.log(error);
       }
@@ -68,14 +53,13 @@ export const App = (): JSX.Element => {
         const bscAmount = await SeasonalTokens[season].bscContract.methods.balanceOf(address).call();
         const format = bscWeb3.utils.fromWei(bscAmount, 'ether');
         SeasonalTokens[season].bscAmount = format;
-        setBscAmount(format);
       } catch (error) {
         console.log(error);
       }
     }
     else {
-      setEthAmount('0');
-      setBscAmount('0');
+      SeasonalTokens[season].ethAmount = '0';
+      SeasonalTokens[season].bscAmount = '0';
     }
   };
 
@@ -92,39 +76,39 @@ export const App = (): JSX.Element => {
 
     const getAllowance = async (contract: any, targetAddr:any) => {
       const allowAmount = await contract.methods.allowance(address, targetAddr).call();
-      console.log('[Allowance] : ', allowAmount);
       setApproved(allowAmount !== '0');
     };
 
     if (type === SwapTypes.ETH_TO_BSC) {
-      try {
-        await switchEthereumChain(NetworkIds.Rinkeby, true);
-      }
-      catch(errorObj: any) {
-        dispatch(error(errorObj.message));
+      let changedNetwork = await switchEthereumChain(NetworkIds.Rinkeby, true);
+      if (!changedNetwork)
         return;
-      }
       setSwapAmount(swapEthAmount);
       const seasonContract = getContract(NetworkIds.Rinkeby, season);
       getAllowance(seasonContract, ethBridgeAddress).then();
-      if (parseFloat(swapEthAmount.toString()) > parseFloat(ethAmount)) {
+      if (parseFloat(swapEthAmount.toString()) > parseFloat(SeasonalTokens[season].ethAmount)) {
         dispatch(error('Swap amount is bigger than current amount'));
+        return;
+      }
+      if (parseFloat(swapEthAmount.toString()) < 100) {
+        dispatch(error('Minimum swap amount is 100!'));
         return;
       }
     }
+
     if (type === SwapTypes.BSC_TO_ETH) {
-      try {
-        await switchEthereumChain(NetworkIds.BscTestnet, true);
-      }
-      catch(errorObj: any) {
-        dispatch(error(errorObj.message));
+      let changedNetwork = await switchEthereumChain(NetworkIds.BscTestnet, true);
+      if (!changedNetwork)
         return;
-      }
       setSwapAmount(swapBscAmount);
       const seasonContract = getContract(NetworkIds.BscTestnet, season);
       getAllowance(seasonContract, bscBridgeAddress);
-      if (parseFloat(swapBscAmount.toString()) > parseFloat(bscAmount)) {
+      if (parseFloat(swapBscAmount.toString()) > parseFloat(SeasonalTokens[season].bscAmount)) {
         dispatch(error('Swap amount is bigger than current amount'));
+        return;
+      }
+      if (parseFloat(swapBscAmount.toString()) < 100) {
+        dispatch(error('Minimum swap amount is 100!'));
         return;
       }
     }
@@ -134,6 +118,19 @@ export const App = (): JSX.Element => {
   const closeSwapModal = () => {
     setSwapModalOpen(false);
   };
+  useEffect(() => {
+    if (address === '') return;
+    Object.keys(SeasonalTokens).forEach((season: string) => {
+      getCurrentAmount(season);
+    });
+    getCurrentAmount(season);
+  }, [address]);
+
+  useEffect(() => {
+    getCurrentAmount(season);
+  }, [season]);
+
+
   
   return (
     <Layout>
