@@ -9,6 +9,10 @@ import summerImg from '../../assets/images/tokens/summer.png';
 import autumnImg from '../../assets/images/tokens/autumn.png';
 import winterImg from '../../assets/images/tokens/winter.png';
 
+const ethWeb3 = new Web3(chains[NetworkIds.Rinkeby].rpcUrls[0]);
+
+const bscWeb3 = new Web3(chains[NetworkIds.BscTestnet].rpcUrls[0]);
+
 const bscSeasonalContracts = Object.keys(networks[NetworkIds.BscTestnet].addresses).reduce((prev:any, season: string)=>{
     prev[season] = new bscWeb3.eth.Contract(contractABIs[season], networks[NetworkIds.BscTestnet].addresses[season]);
     return prev;
@@ -19,10 +23,7 @@ const ethSeasonalContracts = Object.keys(networks[NetworkIds.Rinkeby].addresses)
     return prev;
 }, {});
 
-
-export const ethWeb3 = new Web3(chains[NetworkIds.Rinkeby].rpcUrls[0]);
-
-export const bscWeb3 = new Web3(chains[NetworkIds.BscTestnet].rpcUrls[0]);
+export {ethWeb3, bscWeb3};
 
 export const getContract = (networkId:number, season: string) => {
     const connectWeb3 = new Web3(Web3.givenProvider);
@@ -35,32 +36,24 @@ export const SeasonalTokens: {[key: string]:SeasonalToken} = {
         ethContract: ethSeasonalContracts.SPRING,
         bscContract: bscSeasonalContracts.SPRING,
         img: springImg,
-        ethAmount: '0',
-        bscAmount: '0'
     },
     SUMMER : {
         name: 'SUMMER',
         ethContract: ethSeasonalContracts.SUMMER,
         bscContract: bscSeasonalContracts.SUMMER,
         img: summerImg,
-        ethAmount: '0',
-        bscAmount: '0'
     },
     AUTUMN : {
         name: 'AUTUMN',
         ethContract: ethSeasonalContracts.AUTUMN,
         bscContract: bscSeasonalContracts.AUTUMN,
         img: autumnImg,
-        ethAmount: '0',
-        bscAmount: '0'
     },
     WINTER : {
         name: 'WINTER',
         ethContract: ethSeasonalContracts.WINTER,
         bscContract: bscSeasonalContracts.WINTER,
         img: winterImg,
-        ethAmount: '0',
-        bscAmount: '0'
     },
 };
 

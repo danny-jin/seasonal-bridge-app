@@ -1,4 +1,4 @@
-import seasonalABI from './abi/seasonalABI.json';
+import seasonalTokenABI from './abi/seasonalTokenABI.json';
 import ethBridgeABI from './abi/ethBridgeABI.json';
 import bscBridgeABI from './abi/bscBridgeABI.json';
 export type NetworkId = number;
@@ -71,10 +71,10 @@ interface SeasonalABIS {
   [key: string]: any;
 };
 export const contractABIs: SeasonalABIS = {
-  SPRING: seasonalABI,
-  SUMMER: seasonalABI,
-  AUTUMN: seasonalABI,
-  WINTER: seasonalABI,
+  SPRING: seasonalTokenABI,
+  SUMMER: seasonalTokenABI,
+  AUTUMN: seasonalTokenABI,
+  WINTER: seasonalTokenABI,
   ETH_BRIDGE: ethBridgeABI,
   BSC_BRIDGE: bscBridgeABI
 }

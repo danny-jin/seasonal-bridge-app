@@ -20,6 +20,10 @@ export const App = (): JSX.Element => {
 
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
+  const [seasonTokenAmounts, setSeasonalTokenAmounts] = useState(Object.keys(SeasonalTokens).reduce((prev: any, season: string) => {
+    prev[season] = {name: season, ethAmount: '0', bscAmount: '0'};
+    return prev;
+  }, {}));
   const { connected, connect, address, switchEthereumChain } = useWeb3Context();
   const swapButtonsStyle = 'rounded-md bg-paarl hover:bg-corvette w-200 text-white hover:text-black p-10 font-semibold m-5 b-1';
   const [season, setSeason] = useState('SPRING');
@@ -47,22 +51,23 @@ export const App = (): JSX.Element => {
     if (address !== '') {
       try {
         const ethAmount = await SeasonalTokens[season].ethContract.methods.balanceOf(address).call();
-        SeasonalTokens[season].ethAmount = ethWeb3.utils.fromWei(ethAmount, 'ether');
+        seasonTokenAmounts[season].ethAmount = ethWeb3.utils.fromWei(ethAmount, 'ether');
       } catch (error) {
         console.log(error);
       }
 
       try {
         const bscAmount = await SeasonalTokens[season].bscContract.methods.balanceOf(address).call();
-        SeasonalTokens[season].bscAmount = bscWeb3.utils.fromWei(bscAmount, 'ether');
+        seasonTokenAmounts[season].bscAmount = bscWeb3.utils.fromWei(bscAmount, 'ether');
       } catch (error) {
         console.log(error);
       }
     }
     else {
-      SeasonalTokens[season].ethAmount = '0';
-      SeasonalTokens[season].bscAmount = '0';
+      seasonTokenAmounts[season].ethAmount = '0';
+      seasonTokenAmounts[season].bscAmount = '0';
     }
+    setSeasonalTokenAmounts(seasonTokenAmounts);
     forceUpdate();
   };
 
@@ -94,7 +99,7 @@ export const App = (): JSX.Element => {
       setSwapAmount(swapEthAmount);
       const seasonContract = getContract(NetworkIds.Rinkeby, season);
       getAllowance(seasonContract, ethBridgeAddress).then();
-      if (parseFloat(swapEthAmount.toString()) > parseFloat(SeasonalTokens[season].ethAmount)) {
+      if (parseFloat(swapEthAmount.toString()) > parseFloat(seasonTokenAmounts[season].ethAmount)) {
         dispatch(error('Swap amount is bigger than current amount'));
         return;
       }
@@ -113,7 +118,7 @@ export const App = (): JSX.Element => {
       setSwapAmount(swapBscAmount);
       const seasonContract = getContract(NetworkIds.BscTestnet, season);
       await getAllowance(seasonContract, bscBridgeAddress);
-      if (parseFloat(swapBscAmount.toString()) > parseFloat(SeasonalTokens[season].bscAmount)) {
+      if (parseFloat(swapBscAmount.toString()) > parseFloat(seasonTokenAmounts[season].bscAmount)) {
         dispatch(error('Swap amount is bigger than current amount'));
         return;
       }
@@ -133,14 +138,14 @@ export const App = (): JSX.Element => {
     Object.keys(SeasonalTokens).forEach((season: string) => {
       getCurrentAmount(season).then();
     });
-  }, [address, getCurrentAmount]);
+  }, [address]);
 
   return (
     <Layout>
       <Grid container spacing={ 1 }>
         <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
           <Box className="text-center text-24 m-10">Ethereum</Box>
-          <EthTokenSection season={season} onChange={handleChange} swapAmount={swapEthAmount}  onSwapAmountChange = {swapEthAmountInput}/>
+          <EthTokenSection season={season} onChange={handleChange} swapAmount={swapEthAmount} tokenAmounts={seasonTokenAmounts} onSwapAmountChange = {swapEthAmountInput}/>
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 2 } className="justify-box flex flex-col justify-around">
           <div>
@@ -150,10 +155,10 @@ export const App = (): JSX.Element => {
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
           <Box className="text-center text-24 m-10">Binance Smart Chain</Box>
-          <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} onSwapAmountChange = {swapBscAmountInput}/>
+          <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} tokenAmounts={seasonTokenAmounts}  onSwapAmountChange = {swapBscAmountInput}/>
         </Grid>
       </Grid>
-      <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={getCurrentAmount} websocket={socket} approved={approved} setApproved={setApproved}/>
+      <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={() => getCurrentAmount(season)} websocket={socket} approved={approved} setApproved={setApproved}/>
       <Messages />
       <LoadingModal open={ loadModalOpen }/>
     </Layout>
