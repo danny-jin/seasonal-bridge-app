@@ -1,7 +1,8 @@
 import { Box, Grid } from '@material-ui/core';
-import {useState, useEffect, useCallback} from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import {io} from 'socket.io-client';
+import { io } from 'socket.io-client';
+import useForceUpdate from 'use-force-update';
 
 import { useWeb3Context } from './hooks/web3Context';
 import Layout from './layout';
@@ -18,9 +19,10 @@ import './App.css';
 export const App = (): JSX.Element => {
 
   const dispatch = useDispatch();
+  const forceUpdate = useForceUpdate();
   const { connected, connect, address, switchEthereumChain } = useWeb3Context();
   const swapButtonsStyle = 'rounded-md bg-paarl hover:bg-corvette w-200 text-white hover:text-black p-10 font-semibold m-5 b-1';
-  const [season,setSeason] = useState('SPRING');
+  const [season, setSeason] = useState('SPRING');
   const [swapType, setSwapType] = useState('');
   const [swapModalOpen, setSwapModalOpen] = useState(false);
   const [loadModalOpen, setLoadModalOpen] = useState(false);
@@ -35,10 +37,10 @@ export const App = (): JSX.Element => {
   const handleChange = (event: any) => {
     setSeason(event.target.value);
   };
-  const swapEthMountInput = (event: any) => {
+  const swapEthAmountInput = (event: any) => {
     setSwapEthAmount(event.target.value as number);
   };
-  const swapBscMountInput = (event: any) => {
+  const swapBscAmountInput = (event: any) => {
     setSwapBscAmount(event.target.value as number);
   };
   const getCurrentAmount = async (season: string) => {
@@ -63,6 +65,7 @@ export const App = (): JSX.Element => {
       SeasonalTokens[season].ethAmount = '0';
       SeasonalTokens[season].bscAmount = '0';
     }
+    forceUpdate();
   };
 
   const openSwapModal = async (type:string) => {
@@ -132,21 +135,18 @@ export const App = (): JSX.Element => {
     Object.keys(SeasonalTokens).forEach((season: string) => {
       getCurrentAmount(season);
     });
-    getCurrentAmount(season);
   }, [address]);
 
-  useEffect(() => {
-    getCurrentAmount(season);
-  }, [season]);
+  // useEffect(() => {
+  //   getCurrentAmount(season);
+  // }, [season]);
 
-
-  
   return (
     <Layout>
       <Grid container spacing={ 1 }>
         <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
           <Box className="text-center text-24 m-10">Ethereum</Box>
-          <EthTokenSection season={season} onChange={handleChange} swapAmount={swapEthAmount}  onSwapAmountChange = {swapEthMountInput}/>
+          <EthTokenSection season={season} onChange={handleChange} swapAmount={swapEthAmount}  onSwapAmountChange = {swapEthAmountInput}/>
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 2 } className="justify-box flex flex-col justify-around">
           <div>
@@ -156,10 +156,10 @@ export const App = (): JSX.Element => {
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
           <Box className="text-center text-24 m-10">Binance Smart Chain</Box>
-          <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} onSwapAmountChange = {swapBscMountInput}/>
+          <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} onSwapAmountChange = {swapBscAmountInput}/>
         </Grid>
       </Grid>
-      <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={() => getCurrentAmount(season)} websocket={socket} approved={approved} setApproved={setApproved}/>
+      <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={getCurrentAmount} websocket={socket} approved={approved} setApproved={setApproved}/>
       <Messages />
       <LoadingModal open={ loadModalOpen }/>
     </Layout>
