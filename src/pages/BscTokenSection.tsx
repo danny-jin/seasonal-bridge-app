@@ -26,7 +26,7 @@ export const BscTokenSection = (props: any):JSX.Element => {
   };
 
   return (
-    <div className="w-full swapSection">
+    <div className="w-full mb-50">
       <FormControl variant="standard" className="w-full">
         <label className="text-artySkyBlue font-18 font-medium leading-1.5em">Token Select</label>
         <Select onChange={props.onChange} id="bsc-season" className="p-0" value={props.season} MenuProps={selectMenuProps} disableUnderline>
@@ -38,7 +38,7 @@ export const BscTokenSection = (props: any):JSX.Element => {
                     <img src={SeasonalTokens[season].img} className="w-30 h-30" alt={season}/>
                     <label className="mx-20">{season}</label>
                   </div>
-                  <label className="mr-20 overflow-hidden">{parseFloat(props.tokenAmounts[season].bscAmount).toLocaleString(undefined, { maximumFractionDigits: 2 })}</label>
+                  <label className="mr-20 overflow-hidden">{parseFloat(props.tokenAmounts[season].bscAmount).toLocaleString('en-US', { maximumFractionDigits: 2 })}</label>
                 </div>
               </MenuItem>;
             })

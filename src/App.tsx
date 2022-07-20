@@ -137,14 +137,14 @@ export const App = (): JSX.Element => {
   return (
     <Layout>
       <Grid container spacing={ 1 } className="flex justify-between">
-        <Grid item xs={ 12 } sm={ 12 } md={ 4 } className="justify-box">
+        <Grid item xs={ 12 } sm={ 12 } lg={ 4 } className="justify-box">
           <Box className="text-left text-32 leading-1.5em font-medium text-white mb-35 sm:pt-32">Ethereum</Box>
           <EthTokenSection season={season} onChange={handleChange} swapAmount={swapEthAmount} tokenAmounts={seasonTokenAmounts} onSwapAmountChange = {swapEthAmountInput}/>
         </Grid>
-        <Grid item xs={ 12 } sm={ 12 } md={ 3 } className="flex flex-col justify-center">
-          <div className="flex flex-col items-center justify-box sm:pt-32">
+        <Grid item xs={ 12 } sm={ 12 } lg={ 3 } className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-box pt-40 md:pt-50">
             <div className="w-65 lg:mt-40"><img src={swapIcon} alt="swap image" className="w-full mb-32"/></div>
-            <div className="w-full px-10">
+            <div className="px-10">
                 <button className={ activeButtonStyle + ' mb-20 md:mb-48' } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>
                   Swap from <img src={networks[FromNetwork].logo} alt="ethereum" className="mx-20"/> Eth
                 </button>
@@ -154,8 +154,8 @@ export const App = (): JSX.Element => {
             </div>
           </div>
         </Grid>
-        <Grid item xs={ 12 } sm={ 12 } md={ 4 } className="justify-box">
-          <Box className="text-left text-32 leading-1.5em font-medium text-white mb-35 sm:pt-32">Binance Smart Chain</Box>
+        <Grid item xs={ 12 } sm={ 12 } lg={ 4 } className="justify-box">
+          <Box className="text-left text-32 leading-1.5em font-medium text-white mb-35 sm:pt-32">BSC</Box>
           <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} tokenAmounts={seasonTokenAmounts}  onSwapAmountChange = {swapBscAmountInput}/>
         </Grid>
       </Grid>
