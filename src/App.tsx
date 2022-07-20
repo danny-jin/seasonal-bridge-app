@@ -21,8 +21,8 @@ export const App = (): JSX.Element => {
 
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
-  const activeButtonStyle = 'bg-squash hover:bg-artySkyBlue text-white text-1em rounded-7 shadow-skyblue px-28 py-10 font-medium w-full flex justify-between uppercase';
-  const defaultButtonStyle = 'bg-artySkyBlue hover:bg-squash text-white text-1em rounded-7 shadow-squash px-28 py-10 font-medium w-full flex justify-between uppercase';
+  const activeButtonStyle = 'bg-squash hover:bg-artySkyBlue text-white text-1em rounded-7 shadow-skyblue px-28 py-10 font-medium w-full flex justify-between uppercase items-center';
+  const defaultButtonStyle = 'bg-artySkyBlue hover:bg-squash text-white text-1em rounded-7 shadow-squash px-28 py-10 font-medium w-full flex justify-between uppercase items-center';
   const [seasonTokenAmounts, setSeasonalTokenAmounts] = useState(Object.keys(SeasonalTokens).reduce((prev: any, season: string) => {
     prev[season] = {name: season, ethAmount: '0', bscAmount: '0'};
     return prev;
@@ -137,12 +137,12 @@ export const App = (): JSX.Element => {
   return (
     <Layout>
       <Grid container spacing={ 1 } className="flex justify-between">
-        <Grid item sm={ 12 } lg={ 4 } className="justify-box">
-          <Box className="text-left text-24 leading-1.5em font-medium text-white mb-35">Ethereum</Box>
+        <Grid item sm={ 12 } md={ 4 } className="justify-box">
+          <Box className="text-left text-32 leading-1.5em font-medium text-white mb-35 sm:pt-32">Ethereum</Box>
           <EthTokenSection season={season} onChange={handleChange} swapAmount={swapEthAmount} tokenAmounts={seasonTokenAmounts} onSwapAmountChange = {swapEthAmountInput}/>
         </Grid>
-        <Grid item sm={ 12 } lg={ 3 } className="flex flex-col justify-center">
-          <div className="flex flex-col items-center justify-box">
+        <Grid item sm={ 12 } md={ 3 } className="flex flex-col justify-center">
+          <div className="flex flex-col items-center justify-box sm:pt-32">
             <div className="w-65 lg:mt-40"><img src={swapIcon} alt="swap image" className="w-full mb-32"/></div>
             <button className={ activeButtonStyle + ' mb-48' } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>
               Swap from <img src={networks[FromNetwork].logo} alt="ethereum"/> Eth
@@ -152,8 +152,8 @@ export const App = (): JSX.Element => {
             </button>
           </div>
         </Grid>
-        <Grid item sm={ 12 } lg={ 4 } className="justify-box">
-          <Box className="text-left text-24 leading-1.5em font-medium text-white mb-35">Binance Smart Chain</Box>
+        <Grid item sm={ 12 } md={ 4 } className="justify-box">
+          <Box className="text-left text-32 leading-1.5em font-medium text-white mb-35 sm:pt-32">Binance Smart Chain</Box>
           <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} tokenAmounts={seasonTokenAmounts}  onSwapAmountChange = {swapBscAmountInput}/>
         </Grid>
       </Grid>
