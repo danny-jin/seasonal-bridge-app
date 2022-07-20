@@ -99,6 +99,9 @@ module.exports = {
         lg: '1280px',
         xl: '1920px',
       },
+      maxWidth: {
+        ...range(minSpacingPixel, maxSpacingPixel, spacingPixelIncrement).reduce((merged, f) => ({ ...merged, [f]: `${f}px` }), {})
+      },
     },
   },
   plugins: [],

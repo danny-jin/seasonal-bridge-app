@@ -15,7 +15,7 @@ export const EthTokenSection = (props:any):JSX.Element => {
   };
 
   return (
-    <div className="w-full mb-50">
+    <div className="w-full">
       <FormControl variant="standard" className="w-full">
         <label className="text-artySkyBlue font-1.5em font-medium leading-1.5em">Token Select</label>
         <Select onChange={props.onChange} id="eth-season" className="p-0" value={props.season} MenuProps={selectMenuProps} disableUnderline>
