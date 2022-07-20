@@ -137,11 +137,11 @@ export const App = (): JSX.Element => {
   return (
     <Layout>
       <Grid container spacing={ 1 } className="flex justify-between">
-        <Grid item sm={ 12 } md={ 4 } className="justify-box">
+        <Grid item xs={ 12 } sm={ 12 } md={ 4 } className="justify-box">
           <Box className="text-left text-32 leading-1.5em font-medium text-white mb-35 sm:pt-32">Ethereum</Box>
           <EthTokenSection season={season} onChange={handleChange} swapAmount={swapEthAmount} tokenAmounts={seasonTokenAmounts} onSwapAmountChange = {swapEthAmountInput}/>
         </Grid>
-        <Grid item sm={ 12 } md={ 3 } className="flex flex-col justify-center">
+        <Grid item xs={ 12 } sm={ 12 } md={ 3 } className="flex flex-col justify-center">
           <div className="flex flex-col items-center justify-box sm:pt-32">
             <div className="w-65 lg:mt-40"><img src={swapIcon} alt="swap image" className="w-full mb-32"/></div>
             <div className="w-full px-10">
@@ -154,7 +154,7 @@ export const App = (): JSX.Element => {
             </div>
           </div>
         </Grid>
-        <Grid item sm={ 12 } md={ 4 } className="justify-box">
+        <Grid item xs={ 12 } sm={ 12 } md={ 4 } className="justify-box">
           <Box className="text-left text-32 leading-1.5em font-medium text-white mb-35 sm:pt-32">Binance Smart Chain</Box>
           <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} tokenAmounts={seasonTokenAmounts}  onSwapAmountChange = {swapBscAmountInput}/>
         </Grid>
