@@ -34,11 +34,11 @@ export const BscTokenSection = (props: any):JSX.Element => {
             Object.keys(SeasonalTokens).map((season, index:number) => {
               return <MenuItem value={season} key={index}>
                 <div className={seasonOptionStyle}>
-                  <div className="flex items-center">
+                  <div className="flex items-center pr-20">
                     <img src={SeasonalTokens[season].img} className="w-30 h-30" alt={season}/>
                     <label className="mx-20">{season}</label>
                   </div>
-                  <label className="mr-20">{props.tokenAmounts[season].bscAmount}</label>
+                  <label className="mr-20 overflow-hidden">{parseFloat(props.tokenAmounts[season].bscAmount).toLocaleString(undefined, { maximumFractionDigits: 2 })}</label>
                 </div>
               </MenuItem>;
             })

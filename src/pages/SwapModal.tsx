@@ -15,7 +15,7 @@ export const SwapModal = (props: any): JSX.Element => {
   const dispatch = useDispatch();
   const {address} = useWeb3Context();
   const defaultButtonStyle = 'bg-squash hover:bg-artySkyBlue text-white text-1em rounded-7 px-28 py-10 font-medium w-full flex justify-between uppercase items-center';
-  const [swapLoading, setSwapLoading] = useState(true);
+  const [swapLoading, setSwapLoading] = useState(false);
   const ethBridgeAddress = networks[FromNetwork].addresses.ETH_BRIDGE;
   const bscBridgeAddress = networks[ToNetwork].addresses.BSC_BRIDGE;
 
