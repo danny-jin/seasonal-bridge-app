@@ -12,13 +12,6 @@ export const bridgeSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    setWalletAddress(state, action) {
-      state.walletAddress = action.payload;
-    },
-    changeSeasonal(state, action) {
-      state.currentSeason = action.payload;
-      console.log("currentSeason:", state.currentSeason);
-    }
   }
 });
 export default bridgeSlice.reducer;

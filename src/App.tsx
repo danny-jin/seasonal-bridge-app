@@ -30,7 +30,7 @@ export const App = (): JSX.Element => {
   const { connected, connect, address, switchEthereumChain } = useWeb3Context();
   const [season, setSeason] = useState('SPRING');
   const [swapType, setSwapType] = useState('');
-  const [swapModalOpen, setSwapModalOpen] = useState(false);
+  const [swapModalOpen, setSwapModalOpen] = useState(true);
   const [loadModalOpen, setLoadModalOpen] = useState(false);
   const [swapAmount, setSwapAmount] = useState(0);
   const [swapEthAmount, setSwapEthAmount] = useState(100);
@@ -144,12 +144,18 @@ export const App = (): JSX.Element => {
         <Grid item sm={ 12 } md={ 3 } className="flex flex-col justify-center">
           <div className="flex flex-col items-center justify-box sm:pt-32">
             <div className="w-65 lg:mt-40"><img src={swapIcon} alt="swap image" className="w-full mb-32"/></div>
-            <button className={ activeButtonStyle + ' mb-48' } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>
-              Swap from <img src={networks[FromNetwork].logo} alt="ethereum"/> Eth
-            </button>
-            <button className={ defaultButtonStyle } onClick={() => openSwapModal(SwapTypes.BSC_TO_ETH)}>
-              Swap from <img src={networks[ToNetwork].logo}  alt="bsc"/> Bsc
-            </button>
+            <div className="w-full md:block sm:flex sm:justify-between">
+              <Grid item sm={ 5 } md={ 11 }>
+                <button className={ activeButtonStyle + ' mb-48' } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>
+                  Swap from <img src={networks[FromNetwork].logo} alt="ethereum" className="mx-20"/> Eth
+                </button>
+              </Grid>
+              <Grid item sm={ 5 } md={ 11 }>
+                <button className={ defaultButtonStyle } onClick={() => openSwapModal(SwapTypes.BSC_TO_ETH)}>
+                  Swap from <img src={networks[ToNetwork].logo}  alt="bsc" className="mx-20"/> Bsc
+                </button>
+              </Grid>
+            </div>
           </div>
         </Grid>
         <Grid item sm={ 12 } md={ 4 } className="justify-box">

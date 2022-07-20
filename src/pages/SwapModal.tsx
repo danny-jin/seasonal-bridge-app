@@ -1,7 +1,7 @@
 import { Box, Modal, Fade } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ReactLoading from "react-loading";
 import { useDispatch } from "react-redux";
 
@@ -11,10 +11,11 @@ import { useWeb3Context } from "../hooks/web3Context";
 import { ethWeb3, getContract, SwapTypes, SeasonalTokens } from "../core/constants/base";
 
 export const SwapModal = (props: any): JSX.Element => {
+
   const dispatch = useDispatch();
   const {address} = useWeb3Context();
-  const buttonStyle = 'p-10 px-20 border-2 border-vavewl m-10';
-  const [swapLoading, setSwapLoading] = useState(false);
+  const defaultButtonStyle = 'bg-squash hover:bg-artySkyBlue text-white text-1em rounded-7 px-28 py-10 font-medium w-full flex justify-between uppercase items-center';
+  const [swapLoading, setSwapLoading] = useState(true);
   const ethBridgeAddress = networks[FromNetwork].addresses.ETH_BRIDGE;
   const bscBridgeAddress = networks[ToNetwork].addresses.BSC_BRIDGE;
 
@@ -93,10 +94,10 @@ export const SwapModal = (props: any): JSX.Element => {
           <Box className="text-center">
             {
               props.type === SwapTypes.ETH_TO_BSC ? (
-                  <label className="text-30 font-bold">Swap from ETH To BSC</label>) :
-                (<label className="text-30 font-bold">Swap from BSC TO ETH</label>)
+                  <label className="text-30 font-bold flex justify-center items-center">Swap from <img src={networks[FromNetwork].logo} alt="ethereum" className="mx-20"/> ETH</label>) :
+                (<label className="text-30 font-bold flex justify-center items-center">Swap from <img src={networks[FromNetwork].logo} alt="ethereum" className="mx-20"/> BSC</label>)
             }
-            <button onClick={ onCloseSwapModal } className="float-right"><FontAwesomeIcon icon={ faTimes }/></button>
+            <button onClick={ onCloseSwapModal } className="absolute top-20 right-20"><FontAwesomeIcon icon={ faTimes }/></button>
           </Box>
           <Box className="m-10">
             <Box className="flex items-center justify-center">
@@ -115,8 +116,8 @@ export const SwapModal = (props: any): JSX.Element => {
                     <Box className="">
                       {
                         props.approved === false ? (
-                          <button className={ buttonStyle } onClick={ doApproveSeasonToken }>Approve</button>) : (
-                          <button className={ buttonStyle } onClick={ doSwapSeasonToken }>Swap</button>)
+                          <button className={ defaultButtonStyle } onClick={ doApproveSeasonToken }>Approve</button>) : (
+                          <button className={ defaultButtonStyle } onClick={ doSwapSeasonToken }>Swap</button>)
                       }
                     </Box>)
               }
