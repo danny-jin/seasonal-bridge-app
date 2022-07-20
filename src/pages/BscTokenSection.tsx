@@ -1,22 +1,17 @@
-import {
-  InputLabel,
-  TextField,
-  Select,
-  MenuItem,
-  FormControl
-} from "@material-ui/core";
+import { Select, MenuItem, FormControl } from "@material-ui/core";
 
 import { SeasonalTokens } from "../core/constants/base";
 
 export const BscTokenSection = (props: any):JSX.Element => {
 
+  const optionStyle = 'bg-charCoal text-stormDust font-medium border-1 border-limedSqruce rounded-10 py-[0.87em] px-[1.25em]';
+
   return (
-    <div className="flex justify-center items-center">
+    <div>
       <FormControl variant="standard">
-        <InputLabel id="bsc-season-label">Season</InputLabel>
+        <label className="text-artySkyBlue font-1.5em font-medium">Token Select</label>
         <Select onChange={props.onChange}
                 id="bsc-season"
-                labelId="bsc-season-label"
                 value={props.season}
                 label="Season"
                 className="my-10"
@@ -33,15 +28,19 @@ export const BscTokenSection = (props: any):JSX.Element => {
                 }} >
           {
             Object.keys(SeasonalTokens).map((season, index:number) => {
-              return <MenuItem value={season} className="flex" key={index}>
-                <img src={SeasonalTokens[season].img} className="w-30 h-30" alt={season}/>
-                <label className="font-50 ml-20">{season}</label>
-                <label className="font-50 ml-20">{props.tokenAmounts[season].bscAmount}</label>
+              return <MenuItem value={season} key={index}>
+                <div className={optionStyle+' flex'}>
+                  <img src={SeasonalTokens[season].img} className="w-30 h-30" alt={season}/>
+                  <label className="font-50 ml-20">{season}</label>
+                  <label className="font-50 ml-20">{props.tokenAmounts[season].bscAmount}</label>
+                </div>
               </MenuItem>;
             })
           }
         </Select>
-        <TextField id="outlined-basic" label="Swap Token amount" variant="outlined" value={props.swapAmount} className="my-10" type="number" size="small" inputProps={{ min: 0 }} onChange={props.onSwapAmountChange}/>
+        
+        <label className="text-artySkyBlue font-1.5em font-medium">Token Amount</label>
+        <input className={optionStyle} value={props.swapAmount} type="number" onChange={props.onSwapAmountChange}/>
       </FormControl>
     </div>
   );

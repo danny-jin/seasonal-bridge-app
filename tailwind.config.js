@@ -17,10 +17,13 @@ module.exports = {
     extend: {
       spacing: {
         ...range(minSpacingPixel, maxSpacingPixel, spacingPixelIncrement).reduce((merged, f) => ({ ...merged, [f]: `${f}px` }), {})
-      }, 
+      },
+      fontFamily: {
+        poppins: "'Poppins', sans-serif",
+      },
       fontSize: {
         ...range(minFontSize, maxFontSize).reduce((merged, f) => ({ ...merged, [f]: `${f}px`}), {}),
-        ...range(1, 10).reduce((merged, f) => ({ ...merged, [`${f}em`]: `${f}em`}), {}),
+        ...range(1, 50).reduce((merged, f) => ({ ...merged, [`${f*0.1}em`]: `${f*0.1}em`}), {}),
       },
       fontWeight: {
         thin: '100',
@@ -50,7 +53,7 @@ module.exports = {
         ...range(1, 10).reduce((merged, f) => ({ ...merged, [f]: `${f}px`}), {}),
       },
       borderWidth: {
-        DEFAULT: '1px',
+        1: '1px',
         0: '0px',
         2: '2px',
         3: '3px',
@@ -60,15 +63,17 @@ module.exports = {
       padding: {
 
       },
+      backgroundImage: {
+        'main': "url('./assets/images/swap-bg.png');"
+      },
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
-        paarl: '#9C622E',
-        corvette: '#FACB99',
-        vavewl: '#9DCCEA',
         artySkyBlue: '#00C3FF',
         squash: '#F5A61A',
-
+        charCoal: '#030C1B',
+        limedSqruce: '#3C4955',
+        stormDust: '#626262',
       },
       boxShadow: {
         skyblue: '0px 0px 24px rgb(27, 171, 251, 0.56)',

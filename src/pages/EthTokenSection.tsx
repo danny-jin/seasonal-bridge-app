@@ -13,7 +13,7 @@ export const EthTokenSection = (props:any):JSX.Element => {
   return (
     <div className="flex justify-center items-center">
       <FormControl variant="standard">
-        <InputLabel id="eth-season-label">Season</InputLabel>
+        <InputLabel id="eth-season-label text-artySkyBlue">Token Select</InputLabel>
         <Select onChange={props.onChange}
                 id="eth-season"
                 labelId="eth-season-label"

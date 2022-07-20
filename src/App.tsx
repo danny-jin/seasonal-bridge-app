@@ -20,12 +20,12 @@ export const App = (): JSX.Element => {
 
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
+  const swapButtonsStyle = 'bg-squash text-white text-1em rounded-7 shadow-skyblue px-[1.81em] py-[0.81em] font-medium';
   const [seasonTokenAmounts, setSeasonalTokenAmounts] = useState(Object.keys(SeasonalTokens).reduce((prev: any, season: string) => {
     prev[season] = {name: season, ethAmount: '0', bscAmount: '0'};
     return prev;
   }, {}));
   const { connected, connect, address, switchEthereumChain } = useWeb3Context();
-  const swapButtonsStyle = 'rounded-md bg-paarl hover:bg-corvette w-200 text-white hover:text-black p-10 font-semibold m-5 b-1';
   const [season, setSeason] = useState('SPRING');
   const [swapType, setSwapType] = useState('');
   const [swapModalOpen, setSwapModalOpen] = useState(false);
@@ -134,22 +134,22 @@ export const App = (): JSX.Element => {
 
   return (
     <Layout>
-      <Grid container spacing={ 1 }>
-        <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
-          <Box className="text-center text-24 m-10">Ethereum</Box>
+      <div className="flex justify-between">
+        <div className="justify-box w-[35%] border-2">
+          <Box className="text-left text-2.5em font-medium text-white m-10">Ethereum</Box>
           <EthTokenSection season={season} onChange={handleChange} swapAmount={swapEthAmount} tokenAmounts={seasonTokenAmounts} onSwapAmountChange = {swapEthAmountInput}/>
-        </Grid>
-        <Grid item xs={ 12 } sm={ 12 } md={ 2 } className="justify-box flex flex-col justify-around">
+        </div>
+        <div className="justify-box flex flex-col justify-around w-[16%]">
           <div>
             <button className={ swapButtonsStyle } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>Swap from Eth to  Bsc</button>
             <button className={ swapButtonsStyle } onClick={() => openSwapModal(SwapTypes.BSC_TO_ETH)}>Swap from Bsc to Eth</button>
           </div>
-        </Grid>
-        <Grid item xs={ 12 } sm={ 12 } md={ 5 } className="justify-box">
-          <Box className="text-center text-24 m-10">Binance Smart Chain</Box>
+        </div>
+        <div className="justify-box w-[35%]">
+          <Box className="text-left text-2.5em font-medium m-10 text-white">Binance Smart Chain</Box>
           <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} tokenAmounts={seasonTokenAmounts}  onSwapAmountChange = {swapBscAmountInput}/>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
       <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={() => getCurrentAmount(season)} websocket={socket} approved={approved} setApproved={setApproved}/>
       <Messages />
       <LoadingModal open={ loadModalOpen }/>
