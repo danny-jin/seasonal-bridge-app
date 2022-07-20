@@ -65,7 +65,7 @@ module.exports = {
         8: '8px',
       },
       padding: {
-
+        ...range(minSpacingPixel, maxSpacingPixel).reduce((merged, f) => ({ ...merged, [f]: `${f}px` }), {})
       },
       backgroundImage: {
         'main': "url('./assets/images/swap-bg.png');"
@@ -86,8 +86,7 @@ module.exports = {
       },
       margin: (theme, { negative }) => ({
         auto: 'auto',
-        ...theme('spacing'),
-        ...negative(theme('spacing')),
+        ...range(minSpacingPixel, maxSpacingPixel).reduce((merged, f) => ({ ...merged, [f]: `${f}px` }), {})
       }),
     },
   },

@@ -14,7 +14,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; 
+}
 div#eth-season, div#bsc-season{
   display: flex;
   justify-content: center;
@@ -31,6 +36,7 @@ ul.MuiMenu-list li{
 label + .MuiInput-formControl{
   margin:0px !important;
 }
+
 .MuiSelect-icon{
   right: 10px !important;
   color:white !important;

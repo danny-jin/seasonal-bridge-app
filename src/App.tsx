@@ -21,8 +21,8 @@ export const App = (): JSX.Element => {
 
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
-  const activeButtonStyle = 'bg-squash hover:bg-artySkyBlue text-white text-1em rounded-7 shadow-skyblue px-[1.37em] py-[0.87em] font-medium w-full flex justify-between uppercase';
-  const defaultButtonStyle = 'bg-artySkyBlue hover:bg-squash text-white text-1em rounded-7 shadow-squash px-[1.37em] py-[0.87em] font-medium w-full flex justify-between uppercase';
+  const activeButtonStyle = 'bg-squash hover:bg-artySkyBlue text-white text-1em rounded-7 shadow-skyblue px-28 py-10 font-medium w-full flex justify-between uppercase';
+  const defaultButtonStyle = 'bg-artySkyBlue hover:bg-squash text-white text-1em rounded-7 shadow-squash px-28 py-10 font-medium w-full flex justify-between uppercase';
   const [seasonTokenAmounts, setSeasonalTokenAmounts] = useState(Object.keys(SeasonalTokens).reduce((prev: any, season: string) => {
     prev[season] = {name: season, ethAmount: '0', bscAmount: '0'};
     return prev;
@@ -136,25 +136,27 @@ export const App = (): JSX.Element => {
 
   return (
     <Layout>
-      <div className="flex justify-between">
-        <div className="justify-box w-[35%]">
-          <Box className="text-left text-2.5em leading-1.5em font-medium text-white mb-35">Ethereum</Box>
+      <Grid container spacing={ 1 } className="flex justify-between">
+        <Grid item xs={ 12 } sm={ 12 } md={ 4 } className="justify-box">
+          <Box className="text-left text-32 leading-1.5em font-medium text-white mb-35">Ethereum</Box>
           <EthTokenSection season={season} onChange={handleChange} swapAmount={swapEthAmount} tokenAmounts={seasonTokenAmounts} onSwapAmountChange = {swapEthAmountInput}/>
-        </div>
-        <div className="flex flex-col items-center justify-around w-[16%]">
-            <div className="w-[5.3em]"><img src={swapIcon} alt="swap image" className="w-full"/></div>
-            <button className={ activeButtonStyle + ' mb-[3em]' } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>
-              Swap from {networks[FromNetwork].logo} Eth
+        </Grid>
+        <Grid item xs={ 12 } sm={ 12 } md={ 3 } className="flex flex-col justify-center">
+          <div className="flex flex-col items-center justify-box">
+            <div className="w-65"><img src={swapIcon} alt="swap image" className="w-full mb-32"/></div>
+            <button className={ activeButtonStyle + ' mb-48' } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>
+              Swap from <img src={networks[FromNetwork].logo} /> Eth
             </button>
             <button className={ defaultButtonStyle } onClick={() => openSwapModal(SwapTypes.BSC_TO_ETH)}>
-              Swap from {networks[ToNetwork].logo} Bsc
+              Swap from <img src={networks[ToNetwork].logo} /> Bsc
             </button>
-        </div>
-        <div className="justify-box w-[35%]">
-          <Box className="text-left text-2.5em leading-1.5em font-medium text-white mb-35">Binance Smart Chain</Box>
+          </div>
+        </Grid>
+        <Grid item xs={ 12 } sm={ 12 } md={ 4 } className="justify-box">
+          <Box className="text-left text-32 leading-1.5em font-medium text-white mb-35">Binance Smart Chain</Box>
           <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} tokenAmounts={seasonTokenAmounts}  onSwapAmountChange = {swapBscAmountInput}/>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
       <SwapModal type={ swapType } season={season} open={ swapModalOpen } onClose={ closeSwapModal } amount={swapAmount} onSwapAfter={() => getCurrentAmount(season)} websocket={socket} approved={approved} setApproved={setApproved}/>
       <Messages />
       <LoadingModal open={ loadModalOpen }/>

@@ -4,7 +4,7 @@ import { SeasonalTokens } from "../core/constants/base";
 
 export const EthTokenSection = (props:any):JSX.Element => {
 
-  const tokenInputStyle = 'w-full bg-charCoal text-stormDust text-18 font-medium border-1 border-limedSqruce rounded-10 py-[0.87em] px-[1.25em] shadow-tokenOption';
+  const tokenInputStyle = 'w-full bg-charCoal text-stormDust text-18 font-medium border-1 border-limedSqruce rounded-10 py-[0.87em] px-[1.25em] shadow-tokenOption outline-none appearance-none';
   const seasonOptionStyle = 'flex items-center w-full text-white text-18 font-medium border-1 border-limedSqruce py-[0.87em] px-[1.25em]';
   const selectMenuProps: Partial<MenuPropsType> = {
     variant: 'menu',
@@ -31,7 +31,7 @@ export const EthTokenSection = (props:any):JSX.Element => {
             })
           }
         </Select>
-        <label className="text-artySkyBlue font-1.5em font-medium mt-[1.87em]">Token Amount</label>
+        <label className="text-artySkyBlue font-1.5em font-medium mt-20">Token Amount</label>
         <input className={tokenInputStyle} value={props.swapAmount} type="number" onChange={props.onSwapAmountChange}/>
       </FormControl>
     </div>

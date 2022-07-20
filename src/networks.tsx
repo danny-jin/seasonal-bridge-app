@@ -2,8 +2,8 @@ import seasonalTokenABI from './abi/seasonalTokenABI.json';
 import ethBridgeABI from './abi/ethBridgeABI.json';
 import bscBridgeABI from './abi/bscBridgeABI.json';
 
-import {ReactComponent as EthereumIcon} from "./assets/images/networks/ethereum.svg";
-import {ReactComponent as BscIcon} from "./assets/images/networks/bsc.svg";
+import EthereumIcon from "./assets/images/networks/ethereum.svg";
+import BscIcon from "./assets/images/networks/bsc.svg";
 
 export type NetworkId = number;
 
@@ -61,7 +61,7 @@ export const networks: INetworks = {
       WINTER: '0xCcbA0b2bc4BAbe4cbFb6bD2f1Edc2A9e86b7845f',
       ETH_BRIDGE: '0x9d593299cf32410045D114C3C18a68ACEECDD3f7'
     },
-    logo: <EthereumIcon />
+    logo: EthereumIcon
   },
   [NetworkIds.Bsc]: {
     name: 'BSC',
@@ -73,7 +73,7 @@ export const networks: INetworks = {
       WINTER: '0x8080821eec2B90Bc18dd7Fd9D5Fc7c3F820EB7e9',
       BSC_BRIDGE: '0xA2E1136d323896eD56F15ff85b9C73C6DdC98a96'
     },
-    logo: <BscIcon />
+    logo: BscIcon
   }
 };
 
