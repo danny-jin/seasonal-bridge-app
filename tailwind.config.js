@@ -65,6 +65,7 @@ module.exports = {
         8: '8px',
       },
       padding: {
+        0: '0px',
         ...range(minSpacingPixel, maxSpacingPixel).reduce((merged, f) => ({ ...merged, [f]: `${f}px` }), {})
       },
       backgroundImage: {
@@ -88,6 +89,17 @@ module.exports = {
         auto: 'auto',
         ...range(minSpacingPixel, maxSpacingPixel).reduce((merged, f) => ({ ...merged, [f]: `${f}px` }), {})
       }),
+      screens: {
+        'msm': '320px',
+        'mmd': '375px',
+        'mlg': '425px',
+        'lap': '890px',
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1536px',
+      },
     },
   },
   plugins: [],

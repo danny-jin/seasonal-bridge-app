@@ -137,23 +137,23 @@ export const App = (): JSX.Element => {
   return (
     <Layout>
       <Grid container spacing={ 1 } className="flex justify-between">
-        <Grid item xs={ 12 } sm={ 12 } md={ 4 } className="justify-box">
-          <Box className="text-left text-32 leading-1.5em font-medium text-white mb-35">Ethereum</Box>
+        <Grid item sm={ 12 } lg={ 4 } className="justify-box">
+          <Box className="text-left text-24 leading-1.5em font-medium text-white mb-35">Ethereum</Box>
           <EthTokenSection season={season} onChange={handleChange} swapAmount={swapEthAmount} tokenAmounts={seasonTokenAmounts} onSwapAmountChange = {swapEthAmountInput}/>
         </Grid>
-        <Grid item xs={ 12 } sm={ 12 } md={ 3 } className="flex flex-col justify-center">
+        <Grid item sm={ 12 } lg={ 3 } className="flex flex-col justify-center">
           <div className="flex flex-col items-center justify-box">
-            <div className="w-65"><img src={swapIcon} alt="swap image" className="w-full mb-32"/></div>
+            <div className="w-65 lg:mt-40"><img src={swapIcon} alt="swap image" className="w-full mb-32"/></div>
             <button className={ activeButtonStyle + ' mb-48' } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>
-              Swap from <img src={networks[FromNetwork].logo} /> Eth
+              Swap from <img src={networks[FromNetwork].logo} alt="ethereum"/> Eth
             </button>
             <button className={ defaultButtonStyle } onClick={() => openSwapModal(SwapTypes.BSC_TO_ETH)}>
-              Swap from <img src={networks[ToNetwork].logo} /> Bsc
+              Swap from <img src={networks[ToNetwork].logo}  alt="bsc"/> Bsc
             </button>
           </div>
         </Grid>
-        <Grid item xs={ 12 } sm={ 12 } md={ 4 } className="justify-box">
-          <Box className="text-left text-32 leading-1.5em font-medium text-white mb-35">Binance Smart Chain</Box>
+        <Grid item sm={ 12 } lg={ 4 } className="justify-box">
+          <Box className="text-left text-24 leading-1.5em font-medium text-white mb-35">Binance Smart Chain</Box>
           <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} tokenAmounts={seasonTokenAmounts}  onSwapAmountChange = {swapBscAmountInput}/>
         </Grid>
       </Grid>
