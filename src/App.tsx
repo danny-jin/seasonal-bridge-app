@@ -143,12 +143,12 @@ export const App = (): JSX.Element => {
         </Grid>
         <Grid item xs={ 12 } sm={ 12 } lg={ 3 } className="">
           <Box className="w-full py-50 flex items-center justify-center"><img src={swapIcon} alt="swap image" className="w-60"/></Box>
-            <div className="w-full flex flex-wrap justify-center">
-                <button className={ activeButtonStyle + ' lg:mb-35' } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>
-                  Swap from <img src={networks[FromNetwork].logo} alt="ethereum" className="mx-20"/> Eth
+            <div className="flex flex-wrap justify-center mt-15">
+                <button className={ activeButtonStyle + ' lg:mb-20' } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>
+                  Swap from <img src={networks[FromNetwork].logo} alt="ethereum"/> Eth
                 </button>
                 <button className={ defaultButtonStyle } onClick={() => openSwapModal(SwapTypes.BSC_TO_ETH)}>
-                  Swap from <img src={networks[ToNetwork].logo}  alt="bsc" className="mx-20"/> Bsc
+                  Swap from <img src={networks[ToNetwork].logo}  alt="bsc"/> Bsc
                 </button>
             </div>
         </Grid>
