@@ -14,13 +14,15 @@ import { networks, FromNetwork, ToNetwork } from './networks';
 import Messages from './components/Messages/Messages';
 import { error } from './core/store/slices/MessagesSlice';
 import { bscWeb3, ethWeb3, getContract, SeasonalTokens, serverSocketUrl, SwapTypes } from './core/constants/base';
+import swapIcon from './assets/images/swap/swap-img.png';
 import './App.css';
 
 export const App = (): JSX.Element => {
 
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
-  const swapButtonsStyle = 'bg-squash text-white text-1em rounded-7 shadow-skyblue px-[1.81em] py-[0.81em] font-medium';
+  const activeButtonStyle = 'bg-squash hover:bg-artySkyBlue text-white text-1em rounded-7 shadow-skyblue px-[1.37em] py-[0.87em] font-medium w-full flex justify-between uppercase';
+  const defaultButtonStyle = 'bg-artySkyBlue hover:bg-squash text-white text-1em rounded-7 shadow-squash px-[1.37em] py-[0.87em] font-medium w-full flex justify-between uppercase';
   const [seasonTokenAmounts, setSeasonalTokenAmounts] = useState(Object.keys(SeasonalTokens).reduce((prev: any, season: string) => {
     prev[season] = {name: season, ethAmount: '0', bscAmount: '0'};
     return prev;
@@ -135,18 +137,21 @@ export const App = (): JSX.Element => {
   return (
     <Layout>
       <div className="flex justify-between">
-        <div className="justify-box w-[35%] border-2">
-          <Box className="text-left text-2.5em font-medium text-white m-10">Ethereum</Box>
+        <div className="justify-box w-[35%]">
+          <Box className="text-left text-2.5em leading-1.5em font-medium text-white mb-35">Ethereum</Box>
           <EthTokenSection season={season} onChange={handleChange} swapAmount={swapEthAmount} tokenAmounts={seasonTokenAmounts} onSwapAmountChange = {swapEthAmountInput}/>
         </div>
-        <div className="justify-box flex flex-col justify-around w-[16%]">
-          <div>
-            <button className={ swapButtonsStyle } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>Swap from Eth to  Bsc</button>
-            <button className={ swapButtonsStyle } onClick={() => openSwapModal(SwapTypes.BSC_TO_ETH)}>Swap from Bsc to Eth</button>
-          </div>
+        <div className="flex flex-col items-center justify-around w-[16%]">
+            <div className="w-[5.3em]"><img src={swapIcon} alt="swap image" className="w-full"/></div>
+            <button className={ activeButtonStyle + ' mb-[3em]' } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>
+              Swap from {networks[FromNetwork].logo} Eth
+            </button>
+            <button className={ defaultButtonStyle } onClick={() => openSwapModal(SwapTypes.BSC_TO_ETH)}>
+              Swap from {networks[ToNetwork].logo} Bsc
+            </button>
         </div>
         <div className="justify-box w-[35%]">
-          <Box className="text-left text-2.5em font-medium m-10 text-white">Binance Smart Chain</Box>
+          <Box className="text-left text-2.5em leading-1.5em font-medium text-white mb-35">Binance Smart Chain</Box>
           <BscTokenSection season={season} onChange={handleChange} swapAmount={swapBscAmount} tokenAmounts={seasonTokenAmounts}  onSwapAmountChange = {swapBscAmountInput}/>
         </div>
       </div>

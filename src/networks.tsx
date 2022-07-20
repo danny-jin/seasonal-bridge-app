@@ -1,6 +1,10 @@
 import seasonalTokenABI from './abi/seasonalTokenABI.json';
 import ethBridgeABI from './abi/ethBridgeABI.json';
 import bscBridgeABI from './abi/bscBridgeABI.json';
+
+import {ReactComponent as EthereumIcon} from "./assets/images/networks/ethereum.svg";
+import {ReactComponent as BscIcon} from "./assets/images/networks/bsc.svg";
+
 export type NetworkId = number;
 
 export enum NetworkIds {
@@ -16,7 +20,8 @@ export const ToNetwork = NetworkIds.Bsc;
 interface INetwork {
   name: string,
   isEnabled: boolean,
-  addresses: { [key: string]: string }
+  addresses: { [key: string]: string },
+  logo?: any
 }
 
 interface INetworks {
@@ -33,7 +38,7 @@ export const networks: INetworks = {
       AUTUMN: '0x18349631F5F39CdbcEd344a1EB8cE20A1C884EBB',
       WINTER: '0x40e076f7E6757e8bdb6BdF4d8512404A56039a64',
       ETH_BRIDGE: '0xEf3B7C80d2aAaC5Ed2689Bd0D35A5e69b93D4b9E'
-    }
+    },
   },
   [NetworkIds.BscTestnet]: {
     name: 'BSC Testnet',
@@ -55,7 +60,8 @@ export const networks: INetworks = {
       AUTUMN: '0x4c3bAe16c79c30eEB1004Fb03C878d89695e3a99',
       WINTER: '0xCcbA0b2bc4BAbe4cbFb6bD2f1Edc2A9e86b7845f',
       ETH_BRIDGE: '0x9d593299cf32410045D114C3C18a68ACEECDD3f7'
-    }
+    },
+    logo: <EthereumIcon />
   },
   [NetworkIds.Bsc]: {
     name: 'BSC',
@@ -66,7 +72,8 @@ export const networks: INetworks = {
       AUTUMN: '0xec964DeE5172d86A0188B992B1F5603DE947f41b',
       WINTER: '0x8080821eec2B90Bc18dd7Fd9D5Fc7c3F820EB7e9',
       BSC_BRIDGE: '0xA2E1136d323896eD56F15ff85b9C73C6DdC98a96'
-    }
+    },
+    logo: <BscIcon />
   }
 };
 

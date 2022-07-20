@@ -16,6 +16,7 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
+        0: '0px',
         ...range(minSpacingPixel, maxSpacingPixel, spacingPixelIncrement).reduce((merged, f) => ({ ...merged, [f]: `${f}px` }), {})
       },
       fontFamily: {
@@ -39,6 +40,9 @@ module.exports = {
       letterSpacing: {
         '4': '4px',
         ...range(1, 100).reduce((merged, f) => ({ ...merged, [`${f}p`]: `${f*0.01}em`}), {}),
+      },
+      lineHeight:{
+        ...range(1, 50).reduce((merged, f) => ({ ...merged, [`${f*0.1}em`]: `${f*0.1}em`}), {}),
       },
       borderRadius: {
         none: '0px',
@@ -77,7 +81,8 @@ module.exports = {
       },
       boxShadow: {
         skyblue: '0px 0px 24px rgb(27, 171, 251, 0.56)',
-        squash: '0px 0px 24px rgb(27, 171, 251, 0.56)',
+        squash: '0px 0px 24px rgb(245, 166, 26, 0.56)',
+        tokenOption: 'inset 0px 4px 56px rgb(255, 255, 255, 0.18)',
       },
       margin: (theme, { negative }) => ({
         auto: 'auto',

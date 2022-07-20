@@ -19,4 +19,40 @@ div#eth-season, div#bsc-season{
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-right:0px;
+}
+
+ul.MuiMenu-list {
+  padding: 0px;
+}
+ul.MuiMenu-list li{
+  padding: 0px;
+}
+label + .MuiInput-formControl{
+  margin:0px !important;
+}
+.MuiSelect-icon{
+  right: 10px !important;
+  color:white !important;
+}
+div.MuiPopover-root .MuiPaper-root{
+  background-color: rgba(0,0,0,0) !important;
+}
+ul.MuiList-root{
+  box-shadow: inset 0px 4px 56px rgb(255, 255, 255, 0.18);
+  border-radius: 10px;
+  background-color: #030C1B;
+}
+ul.MuiList-root li:first-child > div{
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+ul.MuiList-root li:last-child > div{
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+div.MuiInputBase-root > div > div{
+  box-shadow: inset 0px 4px 56px rgb(255, 255, 255, 0.18);
+  border-radius: 10px;
+  background-color: #030C1B;
 }

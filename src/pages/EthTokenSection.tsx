@@ -1,47 +1,38 @@
-import {
-    InputLabel,
-    TextField ,
-    Select,
-    MenuItem,
-    FormControl
-  } from "@material-ui/core";
-
+import { Select, MenuItem, FormControl } from "@material-ui/core";
+import { MenuProps as MenuPropsType } from "@material-ui/core/Menu";
 import { SeasonalTokens } from "../core/constants/base";
 
 export const EthTokenSection = (props:any):JSX.Element => {
 
+  const tokenInputStyle = 'w-full bg-charCoal text-stormDust text-18 font-medium border-1 border-limedSqruce rounded-10 py-[0.87em] px-[1.25em] shadow-tokenOption';
+  const seasonOptionStyle = 'flex items-center w-full text-white text-18 font-medium border-1 border-limedSqruce py-[0.87em] px-[1.25em]';
+  const selectMenuProps: Partial<MenuPropsType> = {
+    variant: 'menu',
+    anchorOrigin: { vertical: "bottom", horizontal: "left" },
+    transformOrigin: { vertical: "top", horizontal: "left" },
+    getContentAnchorEl: null,
+    // input: null
+  };
+
   return (
-    <div className="flex justify-center items-center">
-      <FormControl variant="standard">
-        <InputLabel id="eth-season-label text-artySkyBlue">Token Select</InputLabel>
-        <Select onChange={props.onChange}
-                id="eth-season"
-                labelId="eth-season-label"
-                value={props.season}
-                label="Season"
-                className="my-10"
-                MenuProps={{
-                  anchorOrigin: {
-                    vertical: "bottom",
-                    horizontal: "left"
-                  },
-                  transformOrigin: {
-                    vertical: "top",
-                    horizontal: "left"
-                  },
-                  getContentAnchorEl: null
-                }}  >
+    <div className="w-full swapSection">
+      <FormControl variant="standard" className="w-full">
+        <label className="text-artySkyBlue font-1.5em font-medium leading-1.5em">Token Select</label>
+        <Select onChange={props.onChange} id="eth-season" value={props.season} MenuProps={selectMenuProps} disableUnderline>
           {
             Object.keys(SeasonalTokens).map((season, index:number) => {
-              return <MenuItem value={season} className="flex" key={index}>
-                <img src={SeasonalTokens[season].img} className="w-30 h-30" alt={season}/>
-                <label className="font-50 ml-20">{season}</label>
-                <label className="font-50 ml-20">{props.tokenAmounts[season].ethAmount}</label>
+              return <MenuItem value={season} key={index}>
+                <div className={seasonOptionStyle}>
+                  <img src={SeasonalTokens[season].img} className="w-30 h-30" alt={season}/>
+                  <label className="font-50 ml-20">{season}</label>
+                  <label className="font-50 ml-20">{props.tokenAmounts[season].bscAmount}</label>
+                </div>
               </MenuItem>;
             })
           }
         </Select>
-        <TextField id="outlined-basic" label="Swap Token amount" variant="outlined" value={props.swapAmount} className="my-10" type="number" size="small" inputProps={{ min: 0 }} onChange={props.onSwapAmountChange}/>
+        <label className="text-artySkyBlue font-1.5em font-medium mt-[1.87em]">Token Amount</label>
+        <input className={tokenInputStyle} value={props.swapAmount} type="number" onChange={props.onSwapAmountChange}/>
       </FormControl>
     </div>
   );
