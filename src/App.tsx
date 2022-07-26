@@ -78,7 +78,10 @@ export const App = (): JSX.Element => {
       dispatch(error('Please connect to your wallet!'));
       return;
     }
-
+    if( !socket.connected) {
+      dispatch(error('Bridge server is not active now!'));
+      return;
+    }
     const getAllowance = async (contract: any, targetAddr:any) => {
       const allowAmount = await contract.methods.allowance(address, targetAddr).call();
       setApproved(allowAmount !== '0');

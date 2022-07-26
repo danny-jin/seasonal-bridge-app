@@ -83,7 +83,7 @@ export const SwapModal = (props: any): JSX.Element => {
       dispatch(info('Swap is finished!'));
       setSwapLoading(false);
       props.onSwapAfter();
-      onCloseSwapModal();
+      props.onClose(null);
     }
   });
 
