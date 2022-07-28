@@ -21,8 +21,8 @@ export const App = (): JSX.Element => {
 
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
-  const activeButtonStyle = 'max-w-300 bg-squash hover:bg-artySkyBlue text-white text-1em rounded-7 shadow-skyblue px-28 py-10 font-medium w-full flex justify-between uppercase items-center m-20';
-  const defaultButtonStyle = 'max-w-300 bg-artySkyBlue hover:bg-squash text-white text-1em rounded-7 shadow-squash px-28 py-10 font-medium w-full flex justify-between uppercase items-center m-20';
+  const activeButtonStyle = 'max-w-250 bg-squash hover:bg-artySkyBlue text-white text-1em rounded-7 shadow-skyblue px-28 py-10 font-medium w-full flex justify-between uppercase items-center m-20';
+  const defaultButtonStyle = 'max-w-250 bg-artySkyBlue hover:bg-squash text-white text-1em rounded-7 shadow-squash px-28 py-10 font-medium w-full flex justify-between uppercase items-center m-20';
   const [seasonTokenAmounts, setSeasonalTokenAmounts] = useState(Object.keys(SeasonalTokens).reduce((prev: any, season: string) => {
     prev[season] = {name: season, ethAmount: '0', bscAmount: '0'};
     return prev;
@@ -148,10 +148,10 @@ export const App = (): JSX.Element => {
           <Box className="w-full py-50 flex items-center justify-center"><img src={swapIcon} alt="swap image" className="w-60"/></Box>
             <div className="flex flex-wrap justify-center mt-15">
                 <button className={ activeButtonStyle + ' lg:mb-20' } onClick={() => openSwapModal(SwapTypes.ETH_TO_BSC)}>
-                  Swap from <img src={networks[FromNetwork].logo} alt="ethereum"/> Eth
+                  Swap from <img src={networks[FromNetwork].logo} className="mx-10" alt="ethereum"/> Eth
                 </button>
                 <button className={ defaultButtonStyle } onClick={() => openSwapModal(SwapTypes.BSC_TO_ETH)}>
-                  Swap from <img src={networks[ToNetwork].logo}  alt="bsc"/> Bsc
+                  Swap from <img src={networks[ToNetwork].logo} className="mx-10" alt="bsc"/> Bsc
                 </button>
             </div>
         </Grid>

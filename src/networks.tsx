@@ -14,8 +14,8 @@ export enum NetworkIds {
   BscTestnet = 97
 }
 
-export const FromNetwork = NetworkIds.Ethereum;
-export const ToNetwork = NetworkIds.Bsc;
+export const FromNetwork = NetworkIds.Rinkeby;
+export const ToNetwork = NetworkIds.BscTestnet;
 
 interface INetwork {
   name: string,
@@ -39,6 +39,7 @@ export const networks: INetworks = {
       WINTER: '0x40e076f7E6757e8bdb6BdF4d8512404A56039a64',
       ETH_BRIDGE: '0xEf3B7C80d2aAaC5Ed2689Bd0D35A5e69b93D4b9E'
     },
+    logo: EthereumIcon
   },
   [NetworkIds.BscTestnet]: {
     name: 'BSC Testnet',
@@ -49,7 +50,8 @@ export const networks: INetworks = {
       AUTUMN: '0xfACb7C553468AFDAA2000B237688d3271E538725',
       WINTER: '0x4D44480F157DE93027E8c7dC26836aFeeEDDC946',
       BSC_BRIDGE: '0x68C41083cE39b48Eb06a824A28336Cdb21A795DD'
-    }
+    },
+    logo: BscIcon
   },
   [NetworkIds.Ethereum]: {
     name: 'Ethereum',

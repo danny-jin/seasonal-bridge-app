@@ -16,13 +16,24 @@ export const SwapModal = (props: any): JSX.Element => {
   const {address} = useWeb3Context();
   const defaultButtonStyle = 'bg-squash hover:bg-artySkyBlue text-white text-1em rounded-7 px-28 py-10 font-medium w-full flex justify-between uppercase items-center';
   const [swapLoading, setSwapLoading] = useState(false);
+  const [testNetwork, setTestNetwork] = useState(true);
+  const [actionType, setActionType] = useState('');
   const ethBridgeAddress = networks[FromNetwork].addresses.ETH_BRIDGE;
   const bscBridgeAddress = networks[ToNetwork].addresses.BSC_BRIDGE;
 
   const doApproveSeasonToken = async () => {
     if (address === '')
       return;
-
+    if( !props.websocket.connected) {
+      dispatch(error('Bridge server is not active now!'));
+      return;
+    }
+    if (testNetwork) {
+      
+      setActionType('swap');
+      props.websocket.emit('TestNetworkConnections');
+      return;
+    }
     let seasonContract = getContract(FromNetwork, props.season);
     let bridgeAddress = bscBridgeAddress;
     if (props.type === SwapTypes.ETH_TO_BSC) {
@@ -49,6 +60,15 @@ export const SwapModal = (props: any): JSX.Element => {
   const doSwapSeasonToken = async () => {
     if (address === '' || swapLoading)
       return;
+    if( !props.websocket.connected) {
+      dispatch(error('Bridge server is not active now!'));
+      return;
+    }
+    if (testNetwork) {
+      setActionType('swap');
+      props.websocket.emit('TestNetworkConnections');
+      return;
+    }
 
     let seasonAddress = networks[FromNetwork].addresses[props.season];
     const weiAmount = ethWeb3.utils.toWei(props.amount.toString(), 'ether');
@@ -80,13 +100,30 @@ export const SwapModal = (props: any): JSX.Element => {
   
   props.websocket.on('Swap Finished', () => {
     if (swapLoading) {
-      dispatch(info('Swap is finished!'));
       setSwapLoading(false);
       props.onSwapAfter();
       props.onClose(null);
+      setTestNetwork(true);
+      setActionType('');
+      dispatch(info('Swap is finished!'));
     }
   });
-
+  props.websocket.on('NetworksAreActive', () => {
+    setTestNetwork(false);
+    if (actionType == 'approve')
+      doApproveSeasonToken();
+    if (actionType == 'swap')
+      doSwapSeasonToken();
+  });
+  props.websocket.on('error', (data:any) => {
+    if (swapLoading || actionType != '') {
+      setSwapLoading(false);
+      props.onClose(null);
+      setTestNetwork(true);
+      setActionType('');
+      dispatch(error('There is an error in server action!'));
+    }
+  });
   return (
     <Modal open={ props.open } onClose={ onCloseSwapModal }>
       <Fade in={ props.open }>

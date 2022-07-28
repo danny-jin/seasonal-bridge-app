@@ -63,4 +63,4 @@ export const SwapTypes: {[key: string]:string} = {
     BIG_AMOUNT: 'big_amount',
 }
 
-export const serverSocketUrl = '38.242.141.54:3000';
+export const serverSocketUrl = 'localhost:3000';
