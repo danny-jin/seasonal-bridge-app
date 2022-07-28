@@ -1,7 +1,7 @@
 import { Box, Modal, Fade } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { useDispatch } from "react-redux";
 
@@ -16,7 +16,7 @@ export const SwapModal = (props: any): JSX.Element => {
   const {address} = useWeb3Context();
   const defaultButtonStyle = 'bg-squash hover:bg-artySkyBlue text-white text-1em rounded-7 px-28 py-10 font-medium w-full flex justify-between uppercase items-center';
   const [swapLoading, setSwapLoading] = useState(false);
-  const [testNetwork, setTestNetwork] = useState(true);
+  const [testNetwork, setTestNetwork] = useState('');
   const [actionType, setActionType] = useState('');
   const ethBridgeAddress = networks[FromNetwork].addresses.ETH_BRIDGE;
   const bscBridgeAddress = networks[ToNetwork].addresses.BSC_BRIDGE;
@@ -28,9 +28,9 @@ export const SwapModal = (props: any): JSX.Element => {
       dispatch(error('Bridge server is not active now!'));
       return;
     }
-    if (testNetwork) {
-      
-      setActionType('swap');
+    if (testNetwork == '') {
+      setActionType('approve');
+      setTestNetwork('testing');
       props.websocket.emit('TestNetworkConnections');
       return;
     }
@@ -50,8 +50,10 @@ export const SwapModal = (props: any): JSX.Element => {
       props.setApproved(true);
       dispatch(info(`Approve token is finished.`));
     } catch (errorObj: any) {
-      // console.log(errorObj);
-      props.setApproved(false);
+      setSwapLoading(false);
+      setTestNetwork('');
+      props.setApproved(false);      
+      props.onClose(null);
       dispatch(error(errorObj.message));
     }
     setSwapLoading(false);
@@ -64,8 +66,9 @@ export const SwapModal = (props: any): JSX.Element => {
       dispatch(error('Bridge server is not active now!'));
       return;
     }
-    if (testNetwork) {
+    if (testNetwork == '') {
       setActionType('swap');
+      setTestNetwork('testing');
       props.websocket.emit('TestNetworkConnections');
       return;
     }
@@ -78,8 +81,10 @@ export const SwapModal = (props: any): JSX.Element => {
       try {
         await getContract(FromNetwork, 'ETH_BRIDGE').methods.swapFromEth(seasonAddress, weiAmount).send({from: address});
       } catch (errorObj: any) {
-        dispatch(error(errorObj.message));
         setSwapLoading(false);
+        setTestNetwork('');
+        props.onClose(null);
+        dispatch(error(errorObj.message));
       }
     }
     if (props.type === SwapTypes.BSC_TO_ETH) {
@@ -87,8 +92,10 @@ export const SwapModal = (props: any): JSX.Element => {
       try {
         await getContract(ToNetwork, 'BSC_BRIDGE').methods.swapFromBsc(seasonAddress, weiAmount).send({from: address});
       } catch (errorObj: any) {
-        dispatch(error(errorObj.message));
         setSwapLoading(false);
+        setTestNetwork('');
+        props.onClose(null);
+        dispatch(error(errorObj.message));
       }
     }
   };
@@ -103,27 +110,31 @@ export const SwapModal = (props: any): JSX.Element => {
       setSwapLoading(false);
       props.onSwapAfter();
       props.onClose(null);
-      setTestNetwork(true);
+      setTestNetwork('');
       setActionType('');
       dispatch(info('Swap is finished!'));
     }
   });
   props.websocket.on('NetworksAreActive', () => {
-    setTestNetwork(false);
-    if (actionType == 'approve')
-      doApproveSeasonToken();
-    if (actionType == 'swap')
-      doSwapSeasonToken();
+    setTestNetwork('active');
   });
   props.websocket.on('error', (data:any) => {
     if (swapLoading || actionType != '') {
       setSwapLoading(false);
       props.onClose(null);
-      setTestNetwork(true);
+      setTestNetwork('');
       setActionType('');
       dispatch(error('There is an error in server action!'));
     }
   });
+  useEffect(() => {
+    if (testNetwork == 'active'){
+      if (actionType == 'approve')
+        doApproveSeasonToken();
+      if (actionType == 'swap')
+        doSwapSeasonToken();
+    }
+  }, [testNetwork]);
   return (
     <Modal open={ props.open } onClose={ onCloseSwapModal }>
       <Fade in={ props.open }>

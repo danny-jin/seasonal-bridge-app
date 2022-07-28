@@ -14,8 +14,8 @@ export enum NetworkIds {
   BscTestnet = 97
 }
 
-export const FromNetwork = NetworkIds.Rinkeby;
-export const ToNetwork = NetworkIds.BscTestnet;
+export const FromNetwork = NetworkIds.Ethereum;
+export const ToNetwork = NetworkIds.Bsc;
 
 interface INetwork {
   name: string,
